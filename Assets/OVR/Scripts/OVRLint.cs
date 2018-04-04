@@ -117,9 +117,9 @@ public static class OVRLint
 			PlayerSettings.graphicsJobs = true;
 #endif
 
-		if ((!PlayerSettings.MTRendering || !PlayerSettings.mobileMTRendering) &&
+		if (!PlayerSettings.MTRendering &&
 		    EditorUtility.DisplayDialog ("Optimize MT Rendering?", "For CPU performance, please enable multithreaded rendering.", "Use recommended", "Skip"))
-			PlayerSettings.MTRendering = PlayerSettings.mobileMTRendering = true;
+			PlayerSettings.MTRendering = true;
 
 		if ((PlayerSettings.renderingPath == RenderingPath.DeferredShading ||
 		    PlayerSettings.renderingPath == RenderingPath.DeferredLighting ||
