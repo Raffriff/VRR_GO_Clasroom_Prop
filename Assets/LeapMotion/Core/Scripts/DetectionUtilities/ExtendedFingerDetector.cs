@@ -1,13 +1,4 @@
-/******************************************************************************
- * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
- * Leap Motion proprietary and  confidential.                                 *
- *                                                                            *
- * Use subject to the terms of the Leap Motion SDK Agreement available at     *
- * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
- * between Leap Motion and you, your company or other organization.           *
- ******************************************************************************/
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System;
 using Leap.Unity.Attributes;
@@ -20,7 +11,7 @@ namespace Leap.Unity {
    * You can specify whether each finger is extended, not extended, or in either state.
    * This detector activates when every finger on the observed hand meets these conditions.
    * 
-   * If added to a HandModelBase instance or one of its children, this detector checks the
+   * If added to a IHandModel instance or one of its children, this detector checks the
    * finger state at the interval specified by the Period variable. You can also specify
    * which hand model to observe explicitly by setting handModel in the Unity editor or 
    * in code.
@@ -38,12 +29,13 @@ namespace Leap.Unity {
     public float Period = .1f; //seconds
 
     /**
-     * The HandModelBase instance to observe. 
+     * The IHandModel instance to observe. 
      * Set automatically if not explicitly set in the editor.
      * @since 4.1.2
      */
+    [AutoFind(AutoFindLocations.Parents)]
     [Tooltip("The hand model to watch. Set automatically if detector is on a hand.")]
-    public HandModelBase HandModel = null;
+    public IHandModel HandModel = null;
   
     /** The required thumb state. */
     [Header("Finger States")]

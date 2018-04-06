@@ -1,13 +1,4 @@
-/******************************************************************************
- * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
- * Leap Motion proprietary and  confidential.                                 *
- *                                                                            *
- * Use subject to the terms of the Leap Motion SDK Agreement available at     *
- * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
- * between Leap Motion and you, your company or other organization.           *
- ******************************************************************************/
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
 using System.Collections.Generic;
@@ -115,11 +106,10 @@ namespace Leap.Unity {
 
     private void drawElementCallback(Rect rect, int index, bool isActive, bool isFocused) {
       Rect leftRect = rect;
-      leftRect.width *= (fieldInfo.GetValue(_currProperty.serializedObject.targetObject) as ISerializableDictionary).KeyDisplayRatio();
+      leftRect.width *= 0.5f;
 
-      Rect rightRect = rect;
-      rightRect.x += leftRect.width;
-      rightRect.width -= leftRect.width;
+      Rect rightRect = leftRect;
+      rightRect.x += rightRect.width;
 
       Pair pair = _pairs[index];
 

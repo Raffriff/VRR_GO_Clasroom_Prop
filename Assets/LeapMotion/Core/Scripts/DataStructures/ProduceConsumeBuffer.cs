@@ -1,13 +1,4 @@
-/******************************************************************************
- * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
- * Leap Motion proprietary and  confidential.                                 *
- *                                                                            *
- * Use subject to the terms of the Leap Motion SDK Agreement available at     *
- * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
- * between Leap Motion and you, your company or other organization.           *
- ******************************************************************************/
-
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 
 namespace Leap.Unity {
@@ -60,22 +51,6 @@ namespace Leap.Unity {
     }
 
     /// <summary>
-    /// Returns the current number of elements that are held inside the buffer.
-    /// </summary>
-    public int Count {
-      get {
-        int tail = (int)_tail;
-        int head = (int)_head;
-
-        if (tail < head) {
-          tail += Capacity;
-        }
-
-        return tail - head;
-      }
-    }
-
-    /// <summary>
     /// Tries to enqueue a value into the buffer.  If the buffer is already full, this
     /// method will perform no action and return false.  This method is only safe to
     /// be called from a single producer thread.
@@ -87,15 +62,6 @@ namespace Leap.Unity {
       _buffer[_tail] = t;
       _tail = nextTail;
       return true;
-    }
-
-    /// <summary>
-    /// Tries to enqueue a value into the buffer.  If the buffer is already full, this
-    /// method will perform no action and return false.  This method is only safe to
-    /// be called from a single producer thread.
-    /// </summary>
-    public bool TryEnqueue(T t) {
-      return TryEnqueue(ref t);
     }
 
     /// <summary>
@@ -111,24 +77,6 @@ namespace Leap.Unity {
 
       t = _buffer[_head];
       _head = (_head + 1) & _bufferMask;
-      return true;
-    }
-
-    /// <summary>
-    /// Tries to dequeue all values off of the buffer, returning the most recently
-    /// added element.  If there was an element found, this method will return true,
-    /// else it will return false.
-    /// </summary>
-    public bool TryDequeueAll(out T mostRecent) {
-      if (!TryDequeue(out mostRecent)) {
-        return false;
-      }
-
-      T temp;
-      while (TryDequeue(out temp)) {
-        mostRecent = temp;
-      }
-
       return true;
     }
   }

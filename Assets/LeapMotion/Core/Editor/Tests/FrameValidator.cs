@@ -1,13 +1,4 @@
-/******************************************************************************
- * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
- * Leap Motion proprietary and  confidential.                                 *
- *                                                                            *
- * Use subject to the terms of the Leap Motion SDK Agreement available at     *
- * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
- * between Leap Motion and you, your company or other organization.           *
- ******************************************************************************/
-
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
 
 namespace Leap.Unity.Tests {
@@ -143,10 +134,10 @@ namespace Leap.Unity.Tests {
       return null;
     }
 
-    protected void assertVectorsEqual(Vector a, Vector b, string vectorName = "Vector") {
-      Assert.That(a.x, Is.EqualTo(b.x).Within(TOLERANCE), vectorName + ".x");
-      Assert.That(a.y, Is.EqualTo(b.y).Within(TOLERANCE), vectorName + ".y");
-      Assert.That(a.z, Is.EqualTo(b.z).Within(TOLERANCE), vectorName + ".z");
+    protected void assertVectorsEqual(Vector a, Vector b) {
+      Assert.That(a.x, Is.EqualTo(b.x).Within(TOLERANCE));
+      Assert.That(a.y, Is.EqualTo(b.y).Within(TOLERANCE));
+      Assert.That(a.z, Is.EqualTo(b.z).Within(TOLERANCE));
     }
   }
 }

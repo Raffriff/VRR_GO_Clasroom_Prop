@@ -1,27 +1,10 @@
-/******************************************************************************
- * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
- * Leap Motion proprietary and  confidential.                                 *
- *                                                                            *
- * Use subject to the terms of the Leap Motion SDK Agreement available at     *
- * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
- * between Leap Motion and you, your company or other organization.           *
- ******************************************************************************/
-
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using System.Collections;
 
 namespace Leap.Unity {
-
-  /// <summary>
-  /// Provides Frame object data to the Unity application by firing events as soon
-  /// as Frame data is available. Frames contain all currently tracked Hands in view
-  /// of the Leap Motion Controller.
-  /// </summary>
+  /**LeapProvider's supply images and Leap Hands */
   public abstract class LeapProvider : MonoBehaviour {
-
-    public TestHandFactory.TestHandPose editTimePose = TestHandFactory.TestHandPose.PoseA;
-
     public event Action<Frame> OnUpdateFrame;
     public event Action<Frame> OnFixedFrame;
 
@@ -45,6 +28,8 @@ namespace Leap.Unity {
     /// </summary>
     public abstract Frame CurrentFixedFrame { get; }
 
+    public abstract Image CurrentImage { get; }
+
     protected void DispatchUpdateFrameEvent(Frame frame) {
       if (OnUpdateFrame != null) {
         OnUpdateFrame(frame);
@@ -56,15 +41,5 @@ namespace Leap.Unity {
         OnFixedFrame(frame);
       }
     }
-
-  }
-
-  public static class LeapProviderExtensions {
-
-    public static Leap.Hand MakeTestHand(this LeapProvider provider, bool isLeft) {
-      return TestHandFactory.MakeTestHand(isLeft, Hands.Provider.editTimePose)
-                            .Transform(UnityMatrixExtension.GetLeapMatrix(Hands.Provider.transform));
-    }
-
   }
 }

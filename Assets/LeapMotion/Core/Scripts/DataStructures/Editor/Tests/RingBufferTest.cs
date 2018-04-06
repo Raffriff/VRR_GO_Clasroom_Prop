@@ -1,23 +1,14 @@
-/******************************************************************************
- * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
- * Leap Motion proprietary and  confidential.                                 *
- *                                                                            *
- * Use subject to the terms of the Leap Motion SDK Agreement available at     *
- * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
- * between Leap Motion and you, your company or other organization.           *
- ******************************************************************************/
-
-using System;
+﻿using System;
 using NUnit.Framework;
 
-namespace Leap.Unity {
-  public class DequeTests {
+namespace Leap.Unity.Graphing.Tests {
+  public class RingBufferTest {
 
-    private Deque<int> _buffer;
+    private RingBuffer<int> _buffer;
 
     [SetUp]
     public void Setup() {
-      _buffer = new Deque<int>();
+      _buffer = new RingBuffer<int>();
     }
 
     [TearDown]
@@ -27,10 +18,9 @@ namespace Leap.Unity {
     }
 
     [Test]
+   // [ExpectedException(typeof(ArgumentException))]
     public void InvalidCapacity([Values(int.MinValue, -1, 0)] int minCapacity) {
-      Assert.That(() => {
-        new Deque<int>(minCapacity);
-      }, Throws.ArgumentException);
+      new RingBuffer<int>(minCapacity);
     }
 
     [Test]
@@ -43,32 +33,28 @@ namespace Leap.Unity {
     }
 
     [Test]
+    //[ExpectedException(typeof(InvalidOperationException))]
     public void AccessEmptyBack() {
-      Assert.That(() => {
-        int value = _buffer.Front;
-        Assert.NotNull(value);  //Just to remove unused value warning
-      }, Throws.InstanceOf<InvalidOperationException>());
-
+      int value = _buffer.Front;
+      Assert.NotNull(value);  //Just to remove unused value warning
     }
 
     [Test]
+    //[ExpectedException(typeof(InvalidOperationException))]
     public void AccessEmptyFront() {
-      Assert.That(() => {
-        int value = _buffer.Front;
-        Assert.NotNull(value);  //Just to remove unused value warning
-      }, Throws.InstanceOf<InvalidOperationException>());
+      int value = _buffer.Front;
+      Assert.NotNull(value);  //Just to remove unused value warning
     }
 
     [Test]
+    //[ExpectedException(typeof(IndexOutOfRangeException))]
     public void InvalidIndex([Values(int.MinValue, -1, 5, int.MaxValue)] int index) {
-      Assert.That(() => {
-        for (int i = 0; i < 5; i++) {
-          _buffer.PushBack(0);
-        }
+      for (int i = 0; i < 5; i++) {
+        _buffer.PushBack(0);
+      }
 
-        int value = _buffer[index];
-        Assert.NotNull(value); //Just to remove unused value warning
-      }, Throws.InstanceOf<IndexOutOfRangeException>());
+      int value = _buffer[index];
+      Assert.NotNull(value); //Just to remove unused value warning
     }
 
     [Test]
@@ -108,5 +94,7 @@ namespace Leap.Unity {
         Assert.That(i, Is.EqualTo(value));
       }
     }
+
+
   }
 }

@@ -1,13 +1,4 @@
-/******************************************************************************
- * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
- * Leap Motion proprietary and  confidential.                                 *
- *                                                                            *
- * Use subject to the terms of the Leap Motion SDK Agreement available at     *
- * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
- * between Leap Motion and you, your company or other organization.           *
- ******************************************************************************/
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Leap;
@@ -17,10 +8,13 @@ namespace Leap.Unity {
    * LeapHandController uses a Factory to create and update HandRepresentations based on Frame's received from a Provider  */
   public class LeapHandController : MonoBehaviour {
     protected LeapProvider provider;
-    protected HandPool pool;
+    protected HandFactory factory;
 
-    protected Dictionary<int, HandRepresentation> graphicsHandReps = new Dictionary<int, HandRepresentation>();
-    protected Dictionary<int, HandRepresentation> physicsHandReps = new Dictionary<int, HandRepresentation>();
+    protected Dictionary<int, HandRepresentation> graphicsReps = new Dictionary<int, HandRepresentation>();
+    protected Dictionary<int, HandRepresentation> physicsReps = new Dictionary<int, HandRepresentation>();
+
+    // Reference distance from thumb base to pinky base in mm.
+    protected const float GIZMO_SCALE = 5.0f;
 
     protected bool graphicsEnabled = true;
     protected bool physicsEnabled = true;
@@ -43,9 +37,15 @@ namespace Leap.Unity {
       }
     }
 
+    /** Draws the Leap Motion gizmo when in the Unity editor. */
+    void OnDrawGizmos() {
+      Gizmos.matrix = Matrix4x4.Scale(GIZMO_SCALE * Vector3.one);
+      Gizmos.DrawIcon(transform.position, "leap_motion.png");
+    }
+
     protected virtual void OnEnable() {
       provider = requireComponent<LeapProvider>();
-      pool = requireComponent<HandPool>();
+      factory = requireComponent<HandFactory>();
 
       provider.OnUpdateFrame += OnUpdateFrame;
       provider.OnFixedFrame += OnFixedFrame;
@@ -59,14 +59,14 @@ namespace Leap.Unity {
     /** Updates the graphics HandRepresentations. */
     protected virtual void OnUpdateFrame(Frame frame) {
       if (frame != null && graphicsEnabled) {
-        UpdateHandRepresentations(graphicsHandReps, ModelType.Graphics, frame);
+        UpdateHandRepresentations(graphicsReps, ModelType.Graphics, frame);
       }
     }
 
     /** Updates the physics HandRepresentations. */
     protected virtual void OnFixedFrame(Frame frame) {
       if (frame != null && physicsEnabled) {
-        UpdateHandRepresentations(physicsHandReps, ModelType.Physics, frame);
+        UpdateHandRepresentations(physicsReps, ModelType.Physics, frame);
       }
     }
 
@@ -85,7 +85,7 @@ namespace Leap.Unity {
         var curHand = frame.Hands[i];
         HandRepresentation rep;
         if (!all_hand_reps.TryGetValue(curHand.Id, out rep)) {
-          rep = pool.MakeHandRepresentation(curHand, modelType);
+          rep = factory.MakeHandRepresentation(curHand, modelType);
           if (rep != null) {
             all_hand_reps.Add(curHand.Id, rep);
           }

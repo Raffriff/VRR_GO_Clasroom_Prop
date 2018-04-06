@@ -1,51 +1,33 @@
-/******************************************************************************
- * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
- * Leap Motion proprietary and  confidential.                                 *
- *                                                                            *
- * Use subject to the terms of the Leap Motion SDK Agreement available at     *
- * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
- * between Leap Motion and you, your company or other organization.           *
- ******************************************************************************/
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using System.Linq;
-using System.Reflection;
 using System.Collections.Generic;
-using Leap.Unity.Query;
 
 namespace Leap.Unity.Attributes {
 
   [CustomPropertyDrawer(typeof(CombinablePropertyAttribute), true)]
   public class CombinablePropertyDrawer : PropertyDrawer {
 
-    private static Dictionary<FieldInfo, List<CombinablePropertyAttribute>> _cachedAttributes = new Dictionary<FieldInfo, List<CombinablePropertyAttribute>>();
-
     private List<CombinablePropertyAttribute> attributes = new List<CombinablePropertyAttribute>();
-    private void getAttributes(SerializedProperty property) {
-      if (!_cachedAttributes.TryGetValue(fieldInfo, out attributes)) {
-        attributes = new List<CombinablePropertyAttribute>();
-
-        foreach (object o in fieldInfo.GetCustomAttributes(typeof(CombinablePropertyAttribute), true)) {
-          CombinablePropertyAttribute combinableProperty = o as CombinablePropertyAttribute;
-          if (combinableProperty != null) {
-            if (combinableProperty.SupportedTypes.Count() != 0 && !combinableProperty.SupportedTypes.Contains(property.propertyType)) {
-              Debug.LogError("Property attribute " +
-                             combinableProperty.GetType().Name +
-                             " does not support property type " +
-                             property.propertyType + ".");
-              continue;
-            }
-            attributes.Add(combinableProperty);
+    private void getAtrributes(SerializedProperty property) {
+      attributes.Clear();
+      foreach (object o in fieldInfo.GetCustomAttributes(typeof(CombinablePropertyAttribute), true)) {
+        CombinablePropertyAttribute combinableProperty = o as CombinablePropertyAttribute;
+        if (combinableProperty != null) {
+          if (combinableProperty.SupportedTypes.Count() != 0 && !combinableProperty.SupportedTypes.Contains(property.propertyType)) {
+            Debug.LogError("Property attribute " +
+                           combinableProperty.GetType().Name +
+                           " does not support property type " +
+                           property.propertyType + ".");
+            continue;
           }
+          attributes.Add(combinableProperty);
         }
-
-        _cachedAttributes[fieldInfo] = attributes;
       }
     }
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-      getAttributes(property);
+      getAtrributes(property);
 
       float defaultLabelWidth = EditorGUIUtility.labelWidth;
       float fieldWidth = position.width - EditorGUIUtility.labelWidth;
@@ -53,14 +35,17 @@ namespace Leap.Unity.Attributes {
       bool canUseDefaultDrawer = true;
       bool shouldDisable = false;
 
-      RangeAttribute rangeAttribute = fieldInfo.GetCustomAttributes(typeof(RangeAttribute), true).FirstOrDefault() as RangeAttribute;
+      Component attachedComponent = null;
+      if (!property.serializedObject.isEditingMultipleObjects) {
+        attachedComponent = property.serializedObject.targetObject as Component;
+      }
 
-      ISupportDragAndDrop dragAndDropSupport = null;
+      RangeAttribute rangeAttribute = fieldInfo.GetCustomAttributes(typeof(RangeAttribute), true).FirstOrDefault() as RangeAttribute;
 
       IFullPropertyDrawer fullPropertyDrawer = null;
       foreach (var a in attributes) {
         a.fieldInfo = fieldInfo;
-        a.targets = property.serializedObject.targetObjects;
+        a.component = attachedComponent;
 
         if (a is IBeforeLabelAdditiveDrawer) {
           EditorGUIUtility.labelWidth -= (a as IBeforeLabelAdditiveDrawer).GetWidth();
@@ -91,23 +76,14 @@ namespace Leap.Unity.Attributes {
           }
           fullPropertyDrawer = a as IFullPropertyDrawer;
         }
-
-        if (a is ISupportDragAndDrop) {
-          dragAndDropSupport = (a as ISupportDragAndDrop);
-        }
       }
 
       if (fullPropertyDrawer != null && !canUseDefaultDrawer) {
-        Debug.LogError("Cannot have an advanced attribute drawer that draws a custom field, and also have an advanced attribute drawer that draws between label and field!");
+        Debug.LogError("Cannot have an advanced attribute drawer that draws a custom field, and also have an adavanced attribute drawer that draws between label and field!");
         return;
       }
 
       Rect r = position;
-
-      if (dragAndDropSupport != null) {
-        processDragAndDrop(dragAndDropSupport, ref r, property);
-      }
-
       EditorGUI.BeginChangeCheck();
       EditorGUI.BeginDisabledGroup(shouldDisable);
 
@@ -148,7 +124,6 @@ namespace Leap.Unity.Attributes {
       drawAdditive<IAfterFieldAdditiveDrawer>(ref r, property);
 
       EditorGUI.EndDisabledGroup();
-
       bool didChange = EditorGUI.EndChangeCheck();
 
       if (didChange || !property.hasMultipleDifferentValues) {
@@ -156,12 +131,6 @@ namespace Leap.Unity.Attributes {
           if (a is IPropertyConstrainer) {
             (a as IPropertyConstrainer).ConstrainValue(property);
           }
-        }
-      }
-
-      if (didChange) {
-        foreach (var a in attributes) {
-          a.OnPropertyChanged(property);
         }
       }
 
@@ -176,40 +145,6 @@ namespace Leap.Unity.Attributes {
           t.Draw(r, property);
           r.x += r.width;
         }
-      }
-    }
-
-    private void processDragAndDrop(ISupportDragAndDrop dragAndDropSupport,
-                                    ref Rect r, SerializedProperty property) {
-      Event curEvent = Event.current;
-      Rect dropArea = dragAndDropSupport.GetDropArea(r, property);
-
-      switch (curEvent.type) {
-        case EventType.Repaint:
-        case EventType.DragUpdated:
-        case EventType.DragPerform:
-          if (!dropArea.Contains(curEvent.mousePosition, allowInverse: true)) {
-            break;
-          }
-
-          bool isValidDrop = dragAndDropSupport.IsDropValid(
-                               DragAndDrop.objectReferences, property);
-
-          if (isValidDrop) {
-            DragAndDrop.visualMode = DragAndDropVisualMode.Link;
-          }
-          else {
-            DragAndDrop.visualMode = DragAndDropVisualMode.Rejected;
-          }
-
-          if (curEvent.type == EventType.DragPerform && isValidDrop) {
-            DragAndDrop.AcceptDrag();
-
-            dragAndDropSupport.ProcessDroppedObjects(
-                                 DragAndDrop.objectReferences, property);
-          }
-
-          break;
       }
     }
   }

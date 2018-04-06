@@ -1,13 +1,4 @@
-/******************************************************************************
- * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
- * Leap Motion proprietary and  confidential.                                 *
- *                                                                            *
- * Use subject to the terms of the Leap Motion SDK Agreement available at     *
- * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
- * between Leap Motion and you, your company or other organization.           *
- ******************************************************************************/
-
-using UnityEngine;
+﻿using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -16,8 +7,6 @@ using System.Reflection;
 using System.Collections.Generic;
 
 namespace Leap.Unity.Attributes {
-
-  using UnityObject = UnityEngine.Object;
 
   public interface IPropertyConstrainer {
 #if UNITY_EDITOR
@@ -44,14 +33,6 @@ namespace Leap.Unity.Attributes {
 #endif
   }
 
-  public interface ISupportDragAndDrop {
-#if UNITY_EDITOR
-    Rect GetDropArea(Rect r, SerializedProperty property);
-    bool IsDropValid(UnityObject[] draggedObjects, SerializedProperty property);
-    void ProcessDroppedObjects(UnityObject[] droppedObjects, SerializedProperty property);
-#endif
-  }
-
   public interface IBeforeLabelAdditiveDrawer : IAdditiveDrawer { }
   public interface IAfterLabelAdditiveDrawer : IAdditiveDrawer { }
   public interface IBeforeFieldAdditiveDrawer : IAdditiveDrawer { }
@@ -59,7 +40,7 @@ namespace Leap.Unity.Attributes {
 
   public abstract class CombinablePropertyAttribute : PropertyAttribute {
     public FieldInfo fieldInfo;
-    public UnityObject[] targets;
+    public Component component;
 
 #if UNITY_EDITOR
     public virtual IEnumerable<SerializedPropertyType> SupportedTypes {
@@ -67,8 +48,6 @@ namespace Leap.Unity.Attributes {
         yield break;
       }
     }
-
-    public virtual void OnPropertyChanged(SerializedProperty property) { }
 #endif
   }
 }

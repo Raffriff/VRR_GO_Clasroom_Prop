@@ -1,21 +1,12 @@
-/******************************************************************************
- * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
- * Leap Motion proprietary and  confidential.                                 *
- *                                                                            *
- * Use subject to the terms of the Leap Motion SDK Agreement available at     *
- * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
- * between Leap Motion and you, your company or other organization.           *
- ******************************************************************************/
-
-using UnityEngine;
-
+﻿using UnityEngine;
+using UnityEngine.VR;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 using System;
 
 namespace Leap.Unity {
-  [Serializable]
+  [System.Serializable]
   public class EyeType {
     private const string TARGET_EYE_PROPERTY_NAME = "m_TargetEye";
     private const int TARGET_EYE_LEFT_INDEX = 1;
@@ -71,8 +62,8 @@ namespace Leap.Unity {
         return;
       }
 
-      //Allow the user to specify themselves if VR is disabled.
-      if (!XRSupportUtil.IsXREnabled()) {
+      //Allow the user to specify themselves if VR is disabled
+      if (!UnityEngine.XR.XRSettings.enabled || !PlayerSettings.virtualRealitySupported) {
         return;
       }
 
@@ -91,7 +82,7 @@ namespace Leap.Unity {
     }
 #endif
 
-      public void BeginCamera() {
+    public void BeginCamera() {
       if (!_hasBegun) {
         _isOnFirst = true;
         _hasBegun = true;

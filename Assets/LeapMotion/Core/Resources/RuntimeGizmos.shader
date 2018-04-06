@@ -1,4 +1,6 @@
-﻿Shader "Hidden/Runtime Gizmos" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Hidden/Runtime Gizmos" {
   Properties {
     _Color ("Color", Color) = (1,1,1,1)
   }

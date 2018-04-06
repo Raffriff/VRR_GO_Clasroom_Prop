@@ -1,22 +1,8 @@
-/******************************************************************************
- * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
- * Leap Motion proprietary and  confidential.                                 *
- *                                                                            *
- * Use subject to the terms of the Leap Motion SDK Agreement available at     *
- * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
- * between Leap Motion and you, your company or other organization.           *
- ******************************************************************************/
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace Leap.Unity {
+namespace Leap.Unity.Interaction {
 
-  /// <summary>
-  /// A simple wrapper around List to provide readonly access.
-  /// Useful when you want to return a list to someone but you want
-  /// to make sure they don't muck it up!
-  /// </summary>
   public struct ReadonlyList<T> {
     private readonly List<T> _list;
 
@@ -34,10 +20,6 @@ namespace Leap.Unity {
       get {
         return _list[index];
       }
-    }
-
-    public List<T>.Enumerator GetEnumerator() {
-      return _list.GetEnumerator();
     }
 
     public static implicit operator ReadonlyList<T>(List<T> list) {

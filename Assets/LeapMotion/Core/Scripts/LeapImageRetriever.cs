@@ -1,12 +1,8 @@
-/******************************************************************************
- * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
- * Leap Motion proprietary and  confidential.                                 *
- *                                                                            *
- * Use subject to the terms of the Leap Motion SDK Agreement available at     *
- * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
- * between Leap Motion and you, your company or other organization.           *
- ******************************************************************************/
-
+/******************************************************************************\
+* Copyright (C) Leap Motion, Inc. 2011-2016.                                   *
+* Leap Motion proprietary. Licensed under Apache 2.0                           *
+* Available at http://www.apache.org/licenses/LICENSE-2.0.html                 *
+\******************************************************************************/
 using UnityEngine;
 using UnityEngine.Serialization;
 using System;
@@ -27,7 +23,8 @@ namespace Leap.Unity {
     public const int LEFT_IMAGE_INDEX = 0;
     public const int RIGHT_IMAGE_INDEX = 1;
     public const float IMAGE_SETTING_POLL_RATE = 2.0f;
-    
+
+    [AutoFind]
     [SerializeField]
     LeapServiceProvider _provider;
 

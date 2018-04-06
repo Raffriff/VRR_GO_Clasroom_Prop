@@ -1,11 +1,8 @@
-/******************************************************************************
- * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
- * Leap Motion proprietary and  confidential.                                 *
- *                                                                            *
- * Use subject to the terms of the Leap Motion SDK Agreement available at     *
- * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
- * between Leap Motion and you, your company or other organization.           *
- ******************************************************************************/
+﻿/******************************************************************************\
+* Copyright (C) Leap Motion, Inc. 2011-2014.                                   *
+* Leap Motion proprietary. Licensed under Apache 2.0                           *
+* Available at http://www.apache.org/licenses/LICENSE-2.0.html                 *
+\******************************************************************************/
 
 using UnityEngine;
 using System.Collections;
@@ -14,7 +11,7 @@ using System.Linq;
 using Leap;
 
 namespace Leap.Unity {
-  /** This version of HandModelBase supports a hand respresentation based on a skinned and jointed 3D model asset.*/
+  /** This version of IHandModel supports a hand respresentation based on a skinned and jointed 3D model asset.*/
   public class RiggedHand : HandModel {
     public override ModelType HandModelType {
       get {
@@ -61,7 +58,6 @@ namespace Leap.Unity {
 
     public override void InitHand() {
       UpdateHand();
-      setDeformPositionsInFingers(deformPositionsState);
     }
 
     public Quaternion Reorientation() {
