@@ -1,4 +1,13 @@
-﻿using UnityEngine;
+/******************************************************************************
+ * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
+ * Leap Motion proprietary and  confidential.                                 *
+ *                                                                            *
+ * Use subject to the terms of the Leap Motion SDK Agreement available at     *
+ * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
+ * between Leap Motion and you, your company or other organization.           *
+ ******************************************************************************/
+
+using UnityEngine;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,19 +27,34 @@ namespace Leap.Unity {
 #endif
   }
 
+  public interface ISerializableDictionary {
+    float KeyDisplayRatio();
+  }
+
   /// <summary>
   /// In order to have this class be serialized, you will always need to create your own
   /// non-generic version specific to your needs.  This is the same workflow that exists
   /// for using the UnityEvent class as well. 
   /// </summary>
-  public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ICanReportDuplicateInformation, ISerializationCallbackReceiver {
+  public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>,
+    ICanReportDuplicateInformation,
+    ISerializationCallbackReceiver,
+    ISerializableDictionary {
 
     [SerializeField]
     private List<TKey> _keys;
 
     [SerializeField]
     private List<TValue> _values;
-    
+
+    /// <summary>
+    /// Returns how much of the display space should be allocated to the key.
+    /// Should be a value in the range 0-1.
+    /// </summary>
+    public virtual float KeyDisplayRatio() {
+      return 0.5f;
+    }
+
     public override string ToString() {
       StringBuilder toReturn = new StringBuilder();
       List<TKey> keys = Keys.ToList<TKey>();
@@ -43,7 +67,7 @@ namespace Leap.Unity {
         toReturn.Append(values[i].ToString());
         toReturn.Append("}, \n");
       }
-      toReturn.Remove(toReturn.Length-3, 3);
+      toReturn.Remove(toReturn.Length - 3, 3);
       toReturn.Append("]");
       return toReturn.ToString();
     }

@@ -1,11 +1,20 @@
-﻿using UnityEngine;
+/******************************************************************************
+ * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
+ * Leap Motion proprietary and  confidential.                                 *
+ *                                                                            *
+ * Use subject to the terms of the Leap Motion SDK Agreement available at     *
+ * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
+ * between Leap Motion and you, your company or other organization.           *
+ ******************************************************************************/
+
+using UnityEngine;
 using Leap.Unity.Attributes;
 using UnityEngine.Serialization;
 
 namespace Leap.Unity {
 
   /// <summary>
-  /// A basic utility class to aid in creating pinch based actions.  Once linked with an IHandModel, it can
+  /// A basic utility class to aid in creating pinch based actions.  Once linked with a HandModelBase, it can
   /// be used to detect pinch gestures that the hand makes.
   /// </summary>
   public class PinchDetector : AbstractHoldDetector {

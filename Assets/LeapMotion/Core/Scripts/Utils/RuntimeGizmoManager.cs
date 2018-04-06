@@ -1,4 +1,13 @@
-﻿using UnityEngine;
+/******************************************************************************
+ * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
+ * Leap Motion proprietary and  confidential.                                 *
+ *                                                                            *
+ * Use subject to the terms of the Leap Motion SDK Agreement available at     *
+ * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
+ * between Leap Motion and you, your company or other organization.           *
+ ******************************************************************************/
+
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
 using System.Collections.Generic;
@@ -91,13 +100,6 @@ namespace Leap.Unity.RuntimeGizmos {
       if (tempMat.passCount != 4) {
         Debug.LogError("Shader " + _gizmoShader + " does not have 4 passes and cannot be used as a gizmo shader.");
         _gizmoShader = Shader.Find(DEFAULT_SHADER_NAME);
-      }
-
-      if (_sphereMesh == null) {
-        GameObject tempSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        tempSphere.hideFlags = HideFlags.HideAndDontSave;
-        _sphereMesh = tempSphere.GetComponent<MeshFilter>().sharedMesh;
-        tempSphere.GetComponent<MeshFilter>().sharedMesh = null;
       }
 
       if (_frontDrawer != null && _backDrawer != null) {
@@ -511,6 +513,12 @@ namespace Leap.Unity.RuntimeGizmos {
     /// Draws a filled gizmo sphere at the given position with the given radius.
     /// </summary>
     public void DrawSphere(Vector3 center, float radius) {
+      //Throw an error here so we can give a more specific error than the more
+      //general one which will be thrown later for a null mesh.
+      if (sphereMesh == null) {
+        throw new InvalidOperationException("Cannot draw a sphere because the Runtime Gizmo Manager does not have a sphere mesh assigned!");
+      }
+
       DrawMesh(sphereMesh, center, Quaternion.identity, Vector3.one * radius * 2);
     }
 
@@ -524,15 +532,62 @@ namespace Leap.Unity.RuntimeGizmos {
     /// <summary>
     /// Draws a wire gizmo circle at the given position, with the given normal and radius.
     /// </summary>
-    public void DrawWireCirlce(Vector3 center, Vector3 direction, float radius) {
+    public void DrawWireCircle(Vector3 center, Vector3 direction, float radius) {
       PushMatrix();
-      matrix = Matrix4x4.TRS(center, Quaternion.LookRotation(direction), new Vector3(1, 1, 0)) * matrix;
+      matrix = Matrix4x4.TRS(center, Quaternion.LookRotation(direction), Vector3.one) *
+               matrix *
+               Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(1, 1, 0));
       DrawWireSphere(Vector3.zero, radius);
       PopMatrix();
     }
 
+    /// <summary>
+    /// Draws a wire gizmo capsule at the given position, with the given start and end points and radius.
+    /// </summary>
+    public void DrawWireCapsule(Vector3 start, Vector3 end, float radius) {
+      Vector3 up = (end - start).normalized * radius;
+      Vector3 forward = Vector3.Slerp(up, -up, 0.5F);
+      Vector3 right = Vector3.Cross(up, forward).normalized * radius;
+
+      float height = (start - end).magnitude;
+
+      // Radial circles
+      DrawLineWireCircle(start, up, radius, 8);
+      DrawLineWireCircle(end, -up, radius, 8);
+
+      // Sides
+      DrawLine(start + right, end + right);
+      DrawLine(start - right, end - right);
+      DrawLine(start + forward, end + forward);
+      DrawLine(start - forward, end - forward);
+
+      // Endcaps
+      DrawWireArc(start, right, forward, radius, 0.5F, 8);
+      DrawWireArc(start, forward, -right, radius, 0.5F, 8);
+      DrawWireArc(end, right, -forward, radius, 0.5F, 8);
+      DrawWireArc(end, forward, right, radius, 0.5F, 8);
+    }
+
+    private void DrawLineWireCircle(Vector3 center, Vector3 normal, float radius, int numCircleSegments = 16) {
+      DrawWireArc(center, normal, Vector3.Slerp(normal, -normal, 0.5F), radius, 1.0F, numCircleSegments);
+    }
+
+    public void DrawWireArc(Vector3 center, Vector3 normal, Vector3 radialStartDirection, float radius, float fractionOfCircleToDraw, int numCircleSegments = 16) {
+      normal = normal.normalized;
+      Vector3 radiusVector = radialStartDirection.normalized * radius;
+      Vector3 nextVector;
+      int numSegmentsToDraw = (int)(numCircleSegments * fractionOfCircleToDraw);
+      for (int i = 0; i < numSegmentsToDraw; i++) {
+        nextVector = Quaternion.AngleAxis(360F / numCircleSegments, normal) * radiusVector;
+        DrawLine(center + radiusVector, center + nextVector);
+        radiusVector = nextVector;
+      }
+    }
+
     private List<Collider> _colliderList = new List<Collider>();
-    public void DrawColliders(GameObject gameObject, bool useWireframe = true, bool traverseHierarchy = true) {
+    public void DrawColliders(GameObject gameObject, bool useWireframe = true,
+                                                     bool traverseHierarchy = true,
+                                                     bool drawTriggers = false) {
       PushMatrix();
 
       if (traverseHierarchy) {
@@ -544,6 +599,8 @@ namespace Leap.Unity.RuntimeGizmos {
       for (int i = 0; i < _colliderList.Count; i++) {
         Collider collider = _colliderList[i];
         RelativeTo(collider.transform);
+
+        if (collider.isTrigger && !drawTriggers) { continue; }
 
         if (collider is BoxCollider) {
           BoxCollider box = collider as BoxCollider;
@@ -561,14 +618,21 @@ namespace Leap.Unity.RuntimeGizmos {
           }
         } else if (collider is CapsuleCollider) {
           CapsuleCollider capsule = collider as CapsuleCollider;
-          Vector3 size = Vector3.zero;
-          size += Vector3.one * capsule.radius * 2;
-          size += new Vector3(capsule.direction == 0 ? 1 : 0,
-                              capsule.direction == 1 ? 1 : 0,
-                              capsule.direction == 2 ? 1 : 0) * (capsule.height - capsule.radius * 2);
           if (useWireframe) {
-            DrawWireCube(capsule.center, size);
+            Vector3 capsuleDir;
+            switch (capsule.direction) {
+              case 0: capsuleDir = Vector3.right; break;
+              case 1: capsuleDir = Vector3.up; break;
+              case 2: default: capsuleDir = Vector3.forward; break;
+            }
+            DrawWireCapsule(capsule.center + capsuleDir * (capsule.height / 2F - capsule.radius),
+                            capsule.center - capsuleDir * (capsule.height / 2F - capsule.radius), capsule.radius);
           } else {
+            Vector3 size = Vector3.zero;
+            size += Vector3.one * capsule.radius * 2;
+            size += new Vector3(capsule.direction == 0 ? 1 : 0,
+                                capsule.direction == 1 ? 1 : 0,
+                                capsule.direction == 2 ? 1 : 0) * (capsule.height - capsule.radius * 2);
             DrawCube(capsule.center, size);
           }
         } else if (collider is MeshCollider) {
@@ -584,6 +648,49 @@ namespace Leap.Unity.RuntimeGizmos {
       }
 
       PopMatrix();
+    }
+
+    /// <summary>
+    /// Draws a simple XYZ-cross position gizmo at the target position, whose size is
+    /// scaled relative to the main camera's distance to the target position (for reliable
+    /// visibility).
+    /// 
+    /// You can also provide a color argument and lerp coefficient towards that color from
+    /// the axes' default colors (red, green, blue). Colors are lerped in HSV space.
+    /// </summary>
+    public void DrawPosition(Vector3 pos, Color lerpColor, float lerpCoeff) {
+      float targetScale = 0.06f; // 6 cm at 1m away.
+
+      var mainCam = Camera.main;
+      var posWorldSpace = matrix * pos;
+      if (mainCam != null) {
+        float camDistance = Vector3.Distance(posWorldSpace, mainCam.transform.position);
+
+        targetScale *= camDistance;
+      }
+
+      float extent = (targetScale / 2f);
+
+      color = Color.red;
+      if (lerpCoeff != 0f) { color = color.LerpHSV(lerpColor, lerpCoeff); }
+      DrawLine(pos - Vector3.right * extent, pos + Vector3.right * extent);
+
+      color = Color.green;
+      if (lerpCoeff != 0f) { color = color.LerpHSV(lerpColor, lerpCoeff); }
+      DrawLine(pos - Vector3.up * extent, pos + Vector3.up * extent);
+
+      color = Color.blue;
+      if (lerpCoeff != 0f) { color = color.LerpHSV(lerpColor, lerpCoeff); }
+      DrawLine(pos - Vector3.forward * extent, pos + Vector3.forward * extent);
+    }
+
+    /// <summary>
+    /// Draws a simple XYZ-cross position gizmo at the target position, whose size is
+    /// scaled relative to the main camera's distance to the target position (for reliable
+    /// visibility).
+    /// </summary>
+    public void DrawPosition(Vector3 pos) {
+      DrawPosition(pos, Color.white, 0f);
     }
 
     public void ClearAllGizmos() {

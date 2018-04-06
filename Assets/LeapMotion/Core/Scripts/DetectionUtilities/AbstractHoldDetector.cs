@@ -1,4 +1,13 @@
-﻿using UnityEngine;
+/******************************************************************************
+ * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
+ * Leap Motion proprietary and  confidential.                                 *
+ *                                                                            *
+ * Use subject to the terms of the Leap Motion SDK Agreement available at     *
+ * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
+ * between Leap Motion and you, your company or other organization.           *
+ ******************************************************************************/
+
+using UnityEngine;
 using Leap.Unity.Attributes;
 
 namespace Leap.Unity { 
@@ -13,11 +22,10 @@ namespace Leap.Unity {
 
     /** Implementations must implement this method. */
     protected abstract void ensureUpToDate();
-
-    [AutoFind(AutoFindLocations.Parents)]
+    
     [SerializeField]
-    protected IHandModel _handModel;
-    public IHandModel HandModel { get { return _handModel; } set { _handModel = value; } }
+    protected HandModelBase _handModel;
+    public HandModelBase HandModel { get { return _handModel; } set { _handModel = value; } }
 
     /**
     * Whether the Transform of the object containing this Detector script
@@ -53,11 +61,11 @@ namespace Leap.Unity {
 
 
     protected virtual void Awake() {
-      if (GetComponent<IHandModel>() != null && ControlsTransform == true) {
-        Debug.LogWarning("Detector should not be control the IHandModel's transform. Either attach it to its own transform or set ControlsTransform to false.");
+      if (GetComponent<HandModelBase>() != null && ControlsTransform == true) {
+        Debug.LogWarning("Detector should not be control the HandModelBase's transform. Either attach it to its own transform or set ControlsTransform to false.");
       }
       if (_handModel == null) {
-        _handModel = GetComponentInParent<IHandModel>();
+        _handModel = GetComponentInParent<HandModelBase>();
         if (_handModel == null) {
           Debug.LogWarning("The HandModel field of Detector was unassigned and the detector has been disabled.");
           enabled = false;

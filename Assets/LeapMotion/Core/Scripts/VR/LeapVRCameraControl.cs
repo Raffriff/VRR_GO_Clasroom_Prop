@@ -1,4 +1,13 @@
-﻿using UnityEngine;
+/******************************************************************************
+ * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
+ * Leap Motion proprietary and  confidential.                                 *
+ *                                                                            *
+ * Use subject to the terms of the Leap Motion SDK Agreement available at     *
+ * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
+ * between Leap Motion and you, your company or other organization.           *
+ ******************************************************************************/
+
+using UnityEngine;
 using UnityEngine.Rendering;
 using System;
 
@@ -48,7 +57,7 @@ namespace Leap.Unity {
       }
 #endif
 
-      _deviceInfo = new LeapDeviceInfo(LeapDeviceType.Peripheral);
+      _deviceInfo = LeapDeviceInfo.GetLeapDeviceInfo();
     }
 
     void Update() {
@@ -105,9 +114,8 @@ namespace Leap.Unity {
 
       if (_overrideEyePosition) {
         offsetMatrix = _finalCenterMatrix;
-        //Debug.Log(_deviceInfo.baseline);
         Vector3 ipdOffset = (_eyeType.IsLeftEye ? 1 : -1) * transform.right * _deviceInfo.baseline * 0.5f;
-        Vector3 forwardOffset = -transform.forward * _deviceInfo.focalPlaneOffset;
+        Vector3 forwardOffset = -transform.forward * _deviceInfo.forwardOffset;
         offsetMatrix *= Matrix4x4.TRS(ipdOffset + forwardOffset, Quaternion.identity, Vector3.one);
       } else {
         offsetMatrix = _camera.worldToCameraMatrix;
@@ -127,7 +135,6 @@ namespace Leap.Unity {
         ProjectionMatrix = camera.projectionMatrix;
 
         switch (SystemInfo.graphicsDeviceType) {
-          case GraphicsDeviceType.Direct3D9:
           case GraphicsDeviceType.Direct3D11:
           case GraphicsDeviceType.Direct3D12:
             for (int i = 0; i < 4; i++) {

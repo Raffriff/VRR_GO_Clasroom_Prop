@@ -1,4 +1,13 @@
-﻿using UnityEditor;
+/******************************************************************************
+ * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
+ * Leap Motion proprietary and  confidential.                                 *
+ *                                                                            *
+ * Use subject to the terms of the Leap Motion SDK Agreement available at     *
+ * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
+ * between Leap Motion and you, your company or other organization.           *
+ ******************************************************************************/
+
+using UnityEditor;
 
 namespace Leap.Unity {
 
@@ -7,10 +16,14 @@ namespace Leap.Unity {
     protected override void OnEnable() {
       base.OnEnable();
 
-      specifyConditionalDrawing("_overrideDeviceType",
-                                "_overrideDeviceTypeWith");
-
       specifyCustomDecorator("_frameOptimization", frameOptimizationWarning);
+
+      specifyConditionalDrawing("_frameOptimization", (int)LeapServiceProvider.FrameOptimizationMode.None,
+                                "_physicsExtrapolation",
+                                "_physicsExtrapolationTime");
+
+      specifyConditionalDrawing("_physicsExtrapolation", (int)LeapServiceProvider.PhysicsExtrapolationMode.Manual,
+                                "_physicsExtrapolationTime");
     }
 
     private void frameOptimizationWarning(SerializedProperty property) {

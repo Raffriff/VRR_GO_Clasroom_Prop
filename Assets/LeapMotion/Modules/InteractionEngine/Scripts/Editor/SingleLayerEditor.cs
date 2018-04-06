@@ -1,19 +1,32 @@
-﻿using UnityEngine;
+/******************************************************************************
+ * Copyright (C) Leap Motion, Inc. 2011-2017.                                 *
+ * Leap Motion proprietary and  confidential.                                 *
+ *                                                                            *
+ * Use subject to the terms of the Leap Motion SDK Agreement available at     *
+ * https://developer.leapmotion.com/sdk_agreement, or another agreement       *
+ * between Leap Motion and you, your company or other organization.           *
+ ******************************************************************************/
+
+using UnityEngine;
 using UnityEditor;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Leap.Unity.Interaction {
+namespace Leap.Unity {
 
   [CustomPropertyDrawer(typeof(SingleLayer))]
   public class SingleLayerEditor : PropertyDrawer {
-    private string[] _layerNames;
+    private GUIContent[] _layerNames;
     private List<int> _layerValues;
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
       ensureLayersInitialized();
 
-      SerializedProperty layerProperty = property.FindPropertyRelative("layer");
+      SerializedProperty layerProperty = property.FindPropertyRelative("layerIndex");
+      if (layerProperty == null) {
+        Debug.LogWarning("Could not find the layer index property, was it renamed or removed?");
+        return;
+      }
 
       int index = _layerValues.IndexOf(layerProperty.intValue);
       if (index < 0) {
@@ -29,17 +42,35 @@ namespace Leap.Unity.Interaction {
         }
       }
 
-      index = EditorGUI.Popup(position, property.displayName, index, _layerNames);
-      layerProperty.intValue = _layerValues[index];
+      var tooltipAttribute = fieldInfo.GetCustomAttributes(typeof(TooltipAttribute), true).
+                                       Cast<TooltipAttribute>().
+                                       FirstOrDefault();
+
+      if (tooltipAttribute != null) {
+        label.tooltip = tooltipAttribute.tooltip;
+      }
+
+      bool originalMixedValue = EditorGUI.showMixedValue;
+      if (layerProperty.hasMultipleDifferentValues) {
+        EditorGUI.showMixedValue = true;
+      }
+
+      EditorGUI.BeginChangeCheck();
+      index = EditorGUI.Popup(position, label, index, _layerNames);
+      if (EditorGUI.EndChangeCheck()) {
+        layerProperty.intValue = _layerValues[index];
+      }
+
+      EditorGUI.showMixedValue = originalMixedValue;
     }
 
     private void ensureLayersInitialized() {
       if (_layerNames == null) {
-        Dictionary<int, string> valueToLayer = new Dictionary<int, string>();
+        Dictionary<int, GUIContent> valueToLayer = new Dictionary<int, GUIContent>();
         for (int i = 0; i < 32; i++) {
           string layerName = LayerMask.LayerToName(i);
           if (!string.IsNullOrEmpty(layerName)) {
-            valueToLayer[i] = layerName;
+            valueToLayer[i] = new GUIContent(layerName);
           }
         }
 
