@@ -15,13 +15,12 @@ public class SceneSetup : MonoBehaviour {
     #region Mono Methods
     private void Awake() {
         main = this;
-        StartSettingUp ();
     }
     #endregion
 
     #region Public Methods
     public void StartSettingUp() {
-        if (MultiplayerManager.main.playerType == MultiplayerManager.LocalPlayerType.Trainee) {
+        if (LobbyManager.main.playerType == LobbyManager.LocalPlayerType.Trainee) {
             foreach (GameObject toActivate in localTraineeActivate) {
                 toActivate.SetActive (true);
             }

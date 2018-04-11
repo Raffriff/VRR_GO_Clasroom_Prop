@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MultiplayerManager : Photon.PunBehaviour{
+public class LobbyManager : Photon.PunBehaviour{
 
     #region Public Variables
     //Static
-    public static MultiplayerManager main;
+    public static LobbyManager main;
 
     [Header("Connection")]
     public string roomName = "test";
 
     [Header ("Stats")]
     public LocalPlayerType playerType;
+
+    public GameObject sendAndRecieve;
 
     [Header("UI References")]
     public Text debugText;
@@ -41,7 +43,6 @@ public class MultiplayerManager : Photon.PunBehaviour{
     private void Awake() {
         if (enabled) {
             main = this;
-            DontDestroyOnLoad (gameObject);
 
             if (loginField != null)
                 loginField.Select ();
@@ -147,8 +148,12 @@ public class MultiplayerManager : Photon.PunBehaviour{
     }
 
     public void StartTest() {
-        if (readyToStart)
-            UnityEngine.SceneManagement.SceneManager.LoadScene (1);
+        if (readyToStart) {
+            SceneSetup.main.StartSettingUp ();
+            sendAndRecieve.gameObject.SetActive (true);
+            enabled = false;
+            gameObject.SetActive (false);
+        }
     }
 
     private bool CheckRoomSpace(string nickName) {
