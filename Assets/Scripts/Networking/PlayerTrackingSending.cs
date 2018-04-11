@@ -6,7 +6,7 @@ public class PlayerTrackingSending :  Photon.PunBehaviour{
 
     public Transform rightHand;
 
-    private void OnSerializeNetworkView(PhotonStream stream, NetworkMessageInfo info) {
+    private void OnPhotonSerializeView(PhotonStream stream, NetworkMessageInfo info) {
         if (stream.isWriting) {
             stream.SendNext (rightHand.position);
             stream.SendNext (rightHand.rotation);
