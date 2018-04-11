@@ -9,7 +9,7 @@ public class SceneSetup : MonoBehaviour {
 
     [Header ("References")]
     public GameObject[] localTraineeActivate;
-    public GameObject[] localTraineeDeactivate, localCompanionActivate, localCompaniondeactivate;
+    public GameObject[] localTraineeDeactivate, localCompanionActivate, localCompanionDeactivate;
     #endregion
 
     #region Mono Methods
@@ -32,7 +32,7 @@ public class SceneSetup : MonoBehaviour {
             foreach (GameObject toActivate in localCompanionActivate) {
                 toActivate.SetActive (true);
             }
-            foreach (GameObject toDeactivate in localCompaniondeactivate) {
+            foreach (GameObject toDeactivate in localCompanionDeactivate) {
                 toDeactivate.SetActive (false);
             }
         }
