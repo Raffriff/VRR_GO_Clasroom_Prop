@@ -49,6 +49,7 @@ public class MultiplayerManager : Photon.PunBehaviour{
     }
 
     private void Start() {
+        readyToStart = true;
         PhotonNetwork.ConnectUsingSettings ("0.01");
         isCompanion.isOn = false;
         loginField.gameObject.SetActive (true);
@@ -181,10 +182,15 @@ public class MultiplayerManager : Photon.PunBehaviour{
             debugText.text += "Ready To Start!";
             Debug.Log ("Ready To Start!");
         } else {
-            readyToStart = false;
-            startButton.interactable = false;
-            startButton.gameObject.SetActive (false);
+            //readyToStart = false;
+            //startButton.interactable = false;
+            //startButton.gameObject.SetActive (false);
         }
+
+        //Delete afterwards
+        readyToStart = true;
+        startButton.interactable = true;
+        startButton.gameObject.SetActive (true);
 
     }
 
