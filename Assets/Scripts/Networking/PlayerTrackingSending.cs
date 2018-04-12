@@ -9,9 +9,11 @@ public class PlayerTrackingSending :  Photon.PunBehaviour{
     private void OnPhotonSerializeView(PhotonStream stream, NetworkMessageInfo info) {
         if (isActiveAndEnabled) {
             if (stream.isWriting) {
+                Debug.Log ("Sending");
                 stream.SendNext (rightHand.position);
                 stream.SendNext (rightHand.rotation);
             } else {
+                Debug.Log ("Receiving");
                 rightHand.position = (Vector3)stream.ReceiveNext ();
                 rightHand.rotation = (Quaternion)stream.ReceiveNext ();
             }
