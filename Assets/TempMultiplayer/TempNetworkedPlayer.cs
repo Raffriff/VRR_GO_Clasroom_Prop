@@ -28,8 +28,8 @@ public class TempNetworkedPlayer : MonoBehaviour{
         if (stream.isWriting) {
             stream.SendNext (playerGlobal.position);
             stream.SendNext (playerGlobal.rotation);
-            stream.SendNext (playerHead.position);
-            stream.SendNext (playerHead.rotation);
+            stream.SendNext (playerHead.localPosition);
+            stream.SendNext (playerHead.localRotation);
         } else {
             transform.position = (Vector3)stream.ReceiveNext ();
             transform.rotation = (Quaternion)stream.ReceiveNext ();
