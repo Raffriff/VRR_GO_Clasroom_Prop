@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TempNetworkedPlayer : Photon.PunBehaviour {
+public class TempNetworkedPlayer : MonoBehaviour{
 
     public GameObject avatar;
     public Transform playerGlobal;
     public Transform playerHead;
+
+    public PhotonView photonView;
 
     void Start() {
         Debug.Log ("Hello");
@@ -19,17 +21,10 @@ public class TempNetworkedPlayer : Photon.PunBehaviour {
             transform.localPosition = Vector3.zero;
 
             //avatar.SetActive (false);
-#if UNITY_EDITOR
-            playerHead.gameObject.SetActive (true);
-#else
-        playerHead.gameObject.SetActive (false);
-#endif
-
-
         }
     }
 
-    void OnPhotonSerilizeView(PhotonStream stream, PhotonMessageInfo info) {
+    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.isWriting) {
             stream.SendNext (playerGlobal.position);
             stream.SendNext (playerGlobal.rotation);
@@ -42,5 +37,4 @@ public class TempNetworkedPlayer : Photon.PunBehaviour {
             avatar.transform.localRotation = (Quaternion)stream.ReceiveNext ();
         }
     }
-
 }
