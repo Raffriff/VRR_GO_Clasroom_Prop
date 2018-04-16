@@ -15,8 +15,6 @@ public class LobbyManager : Photon.PunBehaviour{
     [Header ("Stats")]
     public LocalPlayerType playerType;
 
-    public GameObject sendAndRecieve;
-
     [Header("UI References")]
     public Text debugText;
     public InputField loginField;
@@ -150,7 +148,6 @@ public class LobbyManager : Photon.PunBehaviour{
     public void StartTest() {
         if (readyToStart) {
             SceneSetup.main.StartSettingUp ();
-            sendAndRecieve.gameObject.SetActive (true);
             enabled = false;
             gameObject.SetActive (false);
         }

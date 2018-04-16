@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TempNetworkedPlayer : MonoBehaviour{
+public class PlayerNetworkController : MonoBehaviour{
 
     public GameObject avatar;
     public Transform playerGlobal;
@@ -11,16 +11,14 @@ public class TempNetworkedPlayer : MonoBehaviour{
     public PhotonView photonView;
 
     void Start() {
-        Debug.Log ("Hello");
-
         if (photonView.isMine) {
-            playerGlobal = GameObject.Find ("[CameraRig]").transform;
-            playerHead = playerGlobal.Find ("Camera (eye)").transform;
+            playerGlobal = SceneSetup.main.localVRTransform;//GameObject.Find ("[CameraRig]").transform;
+            playerHead = SceneSetup.main.localVRHeadTransform;//playerGlobal.Find ("Camera (eye)").transform;
 
             transform.SetParent (playerHead);
             transform.localPosition = Vector3.zero;
 
-            //avatar.SetActive (false);
+            avatar.SetActive (false);
         }
     }
 
