@@ -12,6 +12,7 @@ public class SceneSetup : MonoBehaviour {
     [Header ("References")]
     public Transform localVRTransform;
     public Transform localVRHeadTransform;
+    public Transform localVRHandRight, localVRHandLeft;
     public GameObject[] localTraineeActivate;
     public GameObject[] localTraineeDeactivate, localCompanionActivate, localCompanionDeactivate;
     #endregion
