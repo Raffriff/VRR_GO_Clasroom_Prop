@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerNetworkController : MonoBehaviour{
+public class PlayerNetworkController : MonoBehaviour
+{
 
+    #region Public Variables
     public Transform avatarHead, avatarHandRight, avatarHandLeft;
 
     public Vector3 handRightRotationOffset, handLeftRotationOffset;
@@ -13,6 +15,16 @@ public class PlayerNetworkController : MonoBehaviour{
 
     public PhotonView photonView;
 
+    [Range (0f, 1f)]
+    public float smoothingAmount = 0.75f;
+    #endregion
+
+    #region Private Variables
+    private Vector3 vrPosition, headPosition, handRightPosition, handLeftPosition;
+    private Quaternion vrRotation, headRotation, handRightRotation, handLeftRotation;
+    #endregion
+
+    #region Mono Methods
     void Start() {
         if (photonView.isMine) {
             playerGlobal = SceneSetup.main.localVRTransform;
@@ -29,6 +41,11 @@ public class PlayerNetworkController : MonoBehaviour{
         }
     }
 
+    private void Update() {
+        SmoothMovement ();
+    }
+    #endregion
+
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.isWriting) {
             stream.SendNext (playerGlobal.position);
@@ -40,14 +57,28 @@ public class PlayerNetworkController : MonoBehaviour{
             stream.SendNext (playerHandLeft.position);
             stream.SendNext (playerHandLeft.rotation);
         } else {
-            transform.position = (Vector3)stream.ReceiveNext ();
-            transform.rotation = (Quaternion)stream.ReceiveNext ();
-            avatarHead.position = (Vector3)stream.ReceiveNext ();
-            avatarHead.rotation = (Quaternion)stream.ReceiveNext ();
-            avatarHandRight.position = (Vector3)stream.ReceiveNext ();
-            avatarHandRight.rotation = (Quaternion)stream.ReceiveNext () * Quaternion.Euler (handRightRotationOffset);
-            avatarHandLeft.position = (Vector3)stream.ReceiveNext ();
-            avatarHandLeft.rotation = (Quaternion)stream.ReceiveNext () * Quaternion.Euler (handLeftRotationOffset);
+            vrPosition = (Vector3)stream.ReceiveNext ();
+            vrRotation = (Quaternion)stream.ReceiveNext ();
+            headPosition = (Vector3)stream.ReceiveNext ();
+            headRotation = (Quaternion)stream.ReceiveNext ();
+            handRightPosition = (Vector3)stream.ReceiveNext ();
+            handRightRotation = (Quaternion)stream.ReceiveNext () * Quaternion.Euler (handRightRotationOffset);
+            handLeftPosition = (Vector3)stream.ReceiveNext ();
+            handLeftRotation = (Quaternion)stream.ReceiveNext () * Quaternion.Euler (handLeftRotationOffset);
+        }
+    }
+
+    private void SmoothMovement() {
+        if (!photonView.isMine) {
+            float smoothnessAmount = (1f - smoothingAmount) * (Time.deltaTime / (1f / (float)PhotonNetwork.sendRate));
+            transform.position = Vector3.Lerp (transform.position, vrPosition, smoothnessAmount);
+            transform.rotation = Quaternion.Lerp (transform.rotation, vrRotation, smoothnessAmount);
+            avatarHead.position = Vector3.Lerp (avatarHead.position, headPosition, smoothnessAmount);
+            avatarHead.rotation = Quaternion.Lerp (avatarHead.rotation, headRotation, smoothnessAmount);
+            avatarHandRight.position = Vector3.Lerp (avatarHandRight.position, handRightPosition, smoothnessAmount);
+            avatarHandRight.rotation = Quaternion.Lerp (avatarHandRight.rotation, handRightRotation, smoothnessAmount);
+            avatarHandLeft.position = Vector3.Lerp (avatarHandLeft.position, handLeftPosition, smoothnessAmount);
+            avatarHandLeft.rotation = Quaternion.Lerp (avatarHandLeft.rotation, handLeftRotation, smoothnessAmount);
         }
     }
 }

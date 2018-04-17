@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LobbyManager : Photon.PunBehaviour{
+public class LobbyManager : Photon.PunBehaviour
+{
 
     #region Public Variables
     //Static
     public static LobbyManager main;
 
-    [Header("Connection")]
+    [Header ("Connection")]
     public string roomName = "test";
+    public int dataRate = 30;
 
     [Header ("Stats")]
     public LocalPlayerType playerType;
 
-    [Header("UI References")]
+    [Header ("UI References")]
     public Text debugText;
     public InputField loginField;
     public GameObject loginObject;
@@ -45,6 +47,8 @@ public class LobbyManager : Photon.PunBehaviour{
             if (loginField != null)
                 loginField.Select ();
         }
+        PhotonNetwork.sendRate = dataRate;
+        PhotonNetwork.sendRateOnSerialize = dataRate;
     }
 
     private void Start() {
@@ -132,7 +136,7 @@ public class LobbyManager : Photon.PunBehaviour{
             playerType = LocalPlayerType.Companion;
             PhotonNetwork.player.NickName = "Trainer";
         }
-        
+
 
         PhotonNetwork.JoinOrCreateRoom (loginField.text, new RoomOptions (), new TypedLobby ());
     }
@@ -159,7 +163,7 @@ public class LobbyManager : Photon.PunBehaviour{
                 return false;
         }
         return true;
-    } 
+    }
 
     private void CheckReadyToStart() {
         bool traineeReady = false;
