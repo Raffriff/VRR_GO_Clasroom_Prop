@@ -299,3 +299,6 @@ MonoBehaviour:
   - 'PHOTON / STATE : INITIALIZING APPLICATION'
   - test
   - Range 3 Trigger
+  - Range 2 Trigger
+  - Q1 No button Action
+  - Q1 Yes Buton Action
