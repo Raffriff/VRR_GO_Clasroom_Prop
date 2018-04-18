@@ -1035,7 +1035,7 @@ MonoBehaviour:
       hideUnused: 0
       transitions:
       - fsmEvent:
-          name: Q1 Yes Buton Action
+          name: Q5 Yes Buton Action
           isSystemEvent: 0
           isGlobal: 1
         toState: State 2
@@ -1086,7 +1086,7 @@ MonoBehaviour:
         fsmRectParams: []
         fsmQuaternionParams: []
         stringParams:
-        - Q1 Yes Buton Action
+        - Q5 Yes Buton Action
         byteData: 00000000
         arrayParamSizes: 
         arrayParamTypes: []
@@ -1343,7 +1343,7 @@ MonoBehaviour:
         fsmRectParams: []
         fsmQuaternionParams: []
         stringParams:
-        - Q1 Yes Buton Action
+        - Q5 Yes Buton Action
         byteData: 00000000
         arrayParamSizes: 
         arrayParamTypes: []
@@ -1382,7 +1382,7 @@ MonoBehaviour:
         paramDataPos: 00000000000000000000000000000000010000000000000000000000000000000100000001000000010000000200000002000000020000000300000003000000030000000400000004000000040000000500000005000000050000000600000007000000000000000100000008000000
         paramByteDataSize: 04000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
     events:
-    - name: Q1 Yes Buton Action
+    - name: Q5 Yes Buton Action
       isSystemEvent: 0
       isGlobal: 1
     globalTransitions: []
