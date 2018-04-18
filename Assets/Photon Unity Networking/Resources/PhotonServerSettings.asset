@@ -36,4 +36,7 @@ MonoBehaviour:
   - PunRespawn
   - RequestForPickupItems
   - RequestForPickupTimes
+  - rpc
+  - rpc_d
+  - rpc_s
   DisableAutoOpenWizard: 1
