@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
   AppID: b2347c4e-489e-4001-b838-c7e30eb61eeb
-  VoiceAppID: 
+  VoiceAppID: 0c3c3408-a7b8-4862-9986-bba7641a917f
   ChatAppID: 
   HostType: 1
   PreferredRegion: 0
