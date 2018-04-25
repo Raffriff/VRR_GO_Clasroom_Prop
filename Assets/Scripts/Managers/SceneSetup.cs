@@ -11,11 +11,10 @@ public class SceneSetup : MonoBehaviour {
     public string photonVoiceString;
 
     [Header ("References")]
+    public Camera vrCamera;
     public Transform localVRTransform;
     public Transform localVRHeadTransform;
     public Transform localVRHandRight, localVRHandLeft;
-    public GameObject[] localTraineeActivate;
-    public GameObject[] localTraineeDeactivate, localCompanionActivate, localCompanionDeactivate;
     #endregion
 
     #region Mono Methods
@@ -26,7 +25,8 @@ public class SceneSetup : MonoBehaviour {
 
     #region Public Methods
     public void StartSettingUp() {
-        localVRTransform.gameObject.SetActive (true);
+        if (vrCamera != null)
+            vrCamera.enabled = true;
         if (LobbyManager.main.playerType == LobbyManager.LocalPlayerType.Trainee) {
             /*
              * foreach (GameObject toActivate in localTraineeActivate) {

@@ -15,6 +15,8 @@ public class PlayerNetworkController : MonoBehaviour
 
     public PhotonView photonView;
 
+    public GameObject[] localHidden;
+
     [Range (0f, 1f)]
     public float smoothingAmount = 0.75f;
     #endregion
@@ -35,9 +37,10 @@ public class PlayerNetworkController : MonoBehaviour
             transform.SetParent (playerHead);
             transform.localPosition = Vector3.zero;
 
-            avatarHead.gameObject.SetActive (false);
-            avatarHandRight.gameObject.SetActive (false);
-            avatarHandLeft.gameObject.SetActive (false);
+            foreach (GameObject toHide in localHidden) {
+                toHide.SetActive (false);
+            }
+
         }
     }
 

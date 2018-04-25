@@ -8,3 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Ben.unity
     guid: 9e1aaa3859cc3f04cbad0f795b58b1dc
+  - enabled: 1
+    path: Assets/VR Sligo Enviro.unity
+    guid: d89584517308ed246b0bd8a420d924f5

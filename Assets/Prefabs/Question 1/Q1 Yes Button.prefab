@@ -992,7 +992,7 @@ MonoBehaviour:
       - fsmEvent:
           name: Q1 Yes Buton Action
           isSystemEvent: 0
-          isGlobal: 0
+          isGlobal: 1
         toState: State 2
         linkStyle: 0
         linkConstraint: 0
