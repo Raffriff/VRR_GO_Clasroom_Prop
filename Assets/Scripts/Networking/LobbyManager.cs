@@ -11,7 +11,7 @@ public class LobbyManager : Photon.PunBehaviour
     public static LobbyManager main;
 
     [Header ("Connection")]
-    public string roomName = "test";
+    public string roomName = "Exhibition";
     public int dataRate = 30;
 
     [Header ("Stats")]
@@ -19,20 +19,18 @@ public class LobbyManager : Photon.PunBehaviour
 
     [Header ("UI References")]
     public Text debugText;
-    public InputField loginField;
-    public GameObject loginObject;
     public Toggle isCompanion;
-    public Button startButton, logoutButton;
+    public Button startButton;
     #endregion
 
     #region Hidden Variables
-    [HideInInspector]
-    public PhotonPlayer otherPlayer;
+    //[HideInInspector]
+    //public PhotonPlayer otherPlayer;
     #endregion
 
     #region Private Variables
     private bool connectedToMaster = false;
-    private bool readyToStart = false;
+    private bool joiningRoom = false;
     #endregion
 
     #region Enums
@@ -43,22 +41,16 @@ public class LobbyManager : Photon.PunBehaviour
     private void Awake() {
         if (enabled) {
             main = this;
-
-            if (loginField != null)
-                loginField.Select ();
         }
         PhotonNetwork.sendRate = dataRate;
         PhotonNetwork.sendRateOnSerialize = dataRate;
     }
 
     private void Start() {
-        readyToStart = true;
         PhotonNetwork.ConnectUsingSettings ("0.01");
         isCompanion.isOn = false;
-        loginField.gameObject.SetActive (true);
-        loginObject.gameObject.SetActive (true);
-        logoutButton.gameObject.SetActive (false);
-        startButton.interactable = false;
+        startButton.interactable = true;
+        isCompanion.gameObject.SetActive (false);
         startButton.gameObject.SetActive (false);
         debugText.text = "Connecting To Master...";
         Debug.Log ("Connecting To Master...");
@@ -66,138 +58,113 @@ public class LobbyManager : Photon.PunBehaviour
     #endregion
 
     #region Network Methods
-    public override void OnConnectedToMaster() {
-        connectedToMaster = true;
-        debugText.text += "\nConnected To Master";
-        Debug.Log ("Connected To Master");
+    public override void OnConnectedToPhoton() {
+        base.OnConnectedToPhoton ();
+        DebugTextAdd ("\nConnected To Photon");
+        Debug.Log ("Connected To Photon");
     }
 
     public override void OnDisconnectedFromPhoton() {
         connectedToMaster = false;
-        debugText.text += "\nLost connection to master...";
-        Debug.Log ("Lost connection to master...");
-        Logout ();
+        startButton.gameObject.SetActive (false);
+        debugText.gameObject.SetActive (true);
+        DebugTextAdd ("\n<color=red>Lost connection to photon...</color>"); ;
+        Debug.LogWarning ("Lost connection to photon...");
+        PhotonNetwork.LeaveRoom ();
         PhotonNetwork.ConnectUsingSettings ("0.01");
     }
 
+    public override void OnConnectionFail(DisconnectCause cause) {
+        base.OnConnectionFail (cause);
+        debugText.gameObject.SetActive (true);
+        DebugTextAdd ("\n<color=red>Lost connection to photon...</color>"); ;
+        DebugTextAdd ("\n<color=red>Reason: " + cause.ToString() + "</color>"); ;
+        Debug.LogWarning ("Lost connection to photon...");
+        Debug.LogWarning ("Reason: " + cause.ToString ());
+        connectedToMaster = false;
+        startButton.gameObject.SetActive (false);
+    }
+
+    public override void OnFailedToConnectToPhoton(DisconnectCause cause) {
+        base.OnFailedToConnectToPhoton (cause);
+        debugText.gameObject.SetActive (true);
+        DebugTextAdd ("\n<color=red>Failed connection...</color>"); ;
+        DebugTextAdd ("\n<color=red>Reason: " + cause.ToString () + "</color>"); ;
+        Debug.LogWarning ("Failed connection...");
+        Debug.LogWarning ("Reason: " + cause.ToString ());
+        connectedToMaster = false;
+        startButton.gameObject.SetActive (false);
+    }
+
+    public override void OnConnectedToMaster() {
+        connectedToMaster = true;
+        startButton.gameObject.SetActive (true);
+        DebugTextAdd ("\nConnected To Master");
+        Debug.Log ("Connected To Master");
+        isCompanion.gameObject.SetActive (true);
+        startButton.gameObject.SetActive (true);
+    }
+
     public override void OnJoinedRoom() {
-        if (!CheckRoomSpace (PhotonNetwork.player.NickName)) {
-            debugText.text += "\nLog in Error: Space not available in room.";
-        } else {
-            connectedToMaster = false;
+        joiningRoom = false;
+        connectedToMaster = false;
+        
+        debugText.gameObject.SetActive (false);
+        isCompanion.gameObject.SetActive (false);
+        startButton.gameObject.SetActive (false);
 
-            debugText.text += "\nLogged in as: " + PhotonNetwork.room.Name;
+        if (isCompanion.isOn)
+            playerType = LocalPlayerType.Companion;
+        else
+            playerType = LocalPlayerType.Trainee;
 
-            if (PhotonNetwork.player.NickName == "Trainer") {
-                debugText.text += " (Staff)";
-            }
+        SceneSetup.main.StartSettingUp ();
+    }
 
-            logoutButton.gameObject.SetActive (true);
-            loginField.gameObject.SetActive (false);
-            loginObject.gameObject.SetActive (false);
-            isCompanion.gameObject.SetActive (false);
+    public override void OnPhotonJoinRoomFailed(object[] codeAndMsg) {
+        base.OnPhotonJoinRoomFailed (codeAndMsg);
+        debugText.gameObject.SetActive (true);
+        joiningRoom = false;
+        DebugTextAdd ("\n<color=red>Failed to join room</color>");
+        Debug.LogWarning ("Failed to join room");
+        foreach (object code in codeAndMsg) {
+            DebugTextAdd ("\n<color=yellow>" + code.ToString() + "</color>");
+            Debug.LogWarning (code.ToString ());
         }
-
-        CheckReadyToStart ();
     }
 
     public override void OnLeftRoom() {
-        debugText.text += "\nLogged out";
-        Debug.Log ("Logged out");
-
-        connectedToMaster = true;
-
-        logoutButton.gameObject.SetActive (false);
-        loginField.gameObject.SetActive (true);
-        loginObject.gameObject.SetActive (true);
-        isCompanion.gameObject.SetActive (true);
-
+        debugText.gameObject.SetActive (true);
+        base.OnLeftRoom ();
+        DebugTextAdd ("\nLeft room");
+        Debug.Log ("Left room");
     }
 
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer) {
         base.OnPhotonPlayerConnected (newPlayer);
-
-        debugText.text += "\nOther user logged in";
+        DebugTextAdd ("\nOther user logged in");
         Debug.Log ("Other user logged in");
-
-        CheckReadyToStart ();
     }
 
     public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer) {
         base.OnPhotonPlayerDisconnected (otherPlayer);
-        CheckReadyToStart ();
+        DebugTextAdd ("\nOther user disconnected");
+        Debug.LogWarning ("Other user disconnected");
     }
     #endregion
 
+    private void DebugTextAdd(string input) {
+        debugText.text += input;
+        if (debugText.text.Length > 500) {
+            debugText.text.Substring (debugText.text.Length - 500, 500);
+        }
+    }
+
     public void Login() {
-        playerType = LocalPlayerType.Trainee;
-        PhotonNetwork.player.NickName = "Trainee";
-        if (isCompanion.isOn) {
-            playerType = LocalPlayerType.Companion;
-            PhotonNetwork.player.NickName = "Trainer";
+        if (!joiningRoom) {
+            PhotonNetwork.JoinOrCreateRoom (roomName, new RoomOptions (), new TypedLobby ());
+            joiningRoom = true;
         }
-
-
-        PhotonNetwork.JoinOrCreateRoom (loginField.text, new RoomOptions (), new TypedLobby ());
-    }
-
-    public void Logout() {
-        isCompanion.isOn = false;
-        if (playerType == LocalPlayerType.Companion)
-            isCompanion.isOn = true;
-
-        PhotonNetwork.LeaveRoom ();
-    }
-
-    public void StartTest() {
-        if (readyToStart) {
-            SceneSetup.main.StartSettingUp ();
-            enabled = false;
-            gameObject.SetActive (false);
-        }
-    }
-
-    private bool CheckRoomSpace(string nickName) {
-        foreach (PhotonPlayer otherPlayer in PhotonNetwork.otherPlayers) {
-            if (otherPlayer.NickName == nickName)
-                return false;
-        }
-        return true;
-    }
-
-    private void CheckReadyToStart() {
-        bool traineeReady = false;
-        bool trainerReady = false;
-
-        if (playerType == LocalPlayerType.Trainee)
-            trainerReady = true;
-        else
-            traineeReady = true;
-
-        foreach (PhotonPlayer otherPlayer in PhotonNetwork.otherPlayers) {
-            if (otherPlayer.NickName == "Trainer")
-                trainerReady = true;
-            else if (otherPlayer.NickName == "Trainee")
-                traineeReady = true;
-        }
-
-        if ((traineeReady) && (trainerReady)) {
-            readyToStart = true;
-            startButton.interactable = true;
-            startButton.gameObject.SetActive (true);
-            debugText.text += "Ready To Start!";
-            Debug.Log ("Ready To Start!");
-        } else {
-            //readyToStart = false;
-            //startButton.interactable = false;
-            //startButton.gameObject.SetActive (false);
-        }
-
-        //Delete afterwards
-        readyToStart = true;
-        startButton.interactable = true;
-        startButton.gameObject.SetActive (true);
-
     }
 
 }

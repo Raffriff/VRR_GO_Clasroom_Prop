@@ -28,24 +28,10 @@ public class SceneSetup : MonoBehaviour {
         if (vrCamera != null)
             vrCamera.enabled = true;
         if (LobbyManager.main.playerType == LobbyManager.LocalPlayerType.Trainee) {
-            /*
-             * foreach (GameObject toActivate in localTraineeActivate) {
-                toActivate.SetActive (true);
-            }
-            foreach (GameObject toDeactivate in localTraineeDeactivate) {
-                toDeactivate.SetActive (false);
-            }*/
+
         } else {
             localVRTransform.position = trainerTransform.position;
             localVRTransform.rotation = trainerTransform.rotation;
-            /*
-             * foreach (GameObject toActivate in localCompanionActivate) {
-                toActivate.SetActive (true);
-            }
-            foreach (GameObject toDeactivate in localCompanionDeactivate) {
-                toDeactivate.SetActive (false);
-            }
-            */
         }
         Debug.Log ("Creating Network Player");
         PhotonNetwork.Instantiate ("NetworkedPlayer", Vector3.zero, Quaternion.identity, 0);
