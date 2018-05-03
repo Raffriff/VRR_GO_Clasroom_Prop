@@ -35,7 +35,7 @@ public class SceneSetup : MonoBehaviour {
         }
         Debug.Log ("Creating Network Player");
         PhotonNetwork.Instantiate ("NetworkedPlayer", Vector3.zero, Quaternion.identity, 0);
-        PhotonNetwork.Instantiate (photonVoiceString, Vector3.zero, Quaternion.identity, 0);
+        //PhotonNetwork.Instantiate (photonVoiceString, Vector3.zero, Quaternion.identity, 0);
     }
     #endregion
 
