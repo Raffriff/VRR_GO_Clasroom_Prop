@@ -22,6 +22,11 @@ public class SceneSetup : MonoBehaviour {
     private void Awake() {
         main = this;
     }
+
+    private void Update() {
+        if (Input.GetKeyDown (KeyCode.Return))
+            RestartExperience ();
+    }
     #endregion
 
     #region Public Methods
@@ -40,6 +45,11 @@ public class SceneSetup : MonoBehaviour {
         if ((networkPlayer != null) && (LobbyManager.main.playerType == LobbyManager.LocalPlayerType.Companion)) {
             networkPlayer.avatarRenderer.material = altAvatarMaterial;
         }
+    }
+
+    public void RestartExperience() {
+        PhotonNetwork.LeaveRoom ();
+        UnityEngine.SceneManagement.SceneManager.LoadScene (0);
     }
     #endregion
 
