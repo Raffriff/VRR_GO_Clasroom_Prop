@@ -1977,7 +1977,7 @@ MonoBehaviour:
       swivelOffset: 10
     locomotion:
       weight: 1
-      footDistance: 0.2
+      footDistance: 0.15
       stepThreshold: 0.4
       angleThreshold: 60
       comAngleMlp: 0.75

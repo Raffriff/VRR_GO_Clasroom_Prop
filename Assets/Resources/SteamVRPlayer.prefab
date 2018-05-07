@@ -136,9 +136,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4191246643180542}
   - component: {fileID: 114138515556223036}
-  - component: {fileID: 114393223333032280}
-  - component: {fileID: 114725159077374496}
   - component: {fileID: 114318155919704296}
+  - component: {fileID: 114725159077374496}
+  - component: {fileID: 114393223333032280}
   m_Layer: 0
   m_Name: Controller (right)
   m_TagString: Untagged
@@ -1568,7 +1568,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1274696478969960}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1cebce02d6f8aa34b927d5adf0d7e769, type: 3}
   m_Name: 

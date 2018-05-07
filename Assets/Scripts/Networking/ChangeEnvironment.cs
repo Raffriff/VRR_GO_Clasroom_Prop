@@ -18,6 +18,7 @@ public class ChangeEnvironment : MonoBehaviour {
 
         Color matColour = localRenderer.material.color;
         matColour.a = 0f;
+        matColour.r = 0f;
         localRenderer.material.color = matColour;
     }
 
@@ -27,6 +28,7 @@ public class ChangeEnvironment : MonoBehaviour {
 
         Color matColour = localRenderer.material.color;
         matColour.a = loadAmount * 1f;
+        matColour.r = loadAmount * 1f;
         localRenderer.material.color = matColour;
     }
 
@@ -39,6 +41,7 @@ public class ChangeEnvironment : MonoBehaviour {
             }
             Color matColour = localRenderer.material.color;
             matColour.a = loadAmount * 1f;
+            matColour.r = loadAmount * 1f;
             localRenderer.material.color = matColour;
         }
     }

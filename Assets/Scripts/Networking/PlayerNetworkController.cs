@@ -26,6 +26,7 @@ public class PlayerNetworkController : MonoBehaviour
     #region Private Variables
     private Vector3 vrPosition, headPosition, handRightPosition, handLeftPosition;
     private Quaternion vrRotation, headRotation, handRightRotation, handLeftRotation;
+    private bool materialUpdated = false;
     #endregion
 
     #region Mono Methods
@@ -43,6 +44,13 @@ public class PlayerNetworkController : MonoBehaviour
                 toHide.SetActive (false);
             }
 
+        } else {
+            if (SceneSetup.main.altAvatarMaterials != null) {
+                if (SceneSetup.main.altAvatarMaterials.Count > 0) {
+                    avatarRenderer.material = SceneSetup.main.altAvatarMaterials[0];
+                    SceneSetup.main.altAvatarMaterials.RemoveAt (0);
+                }
+            }
         }
     }
 

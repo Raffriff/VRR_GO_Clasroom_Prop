@@ -15,7 +15,7 @@ public class SceneSetup : MonoBehaviour {
     public Transform localVRTransform;
     public Transform localVRHeadTransform;
     public Transform localVRHandRight, localVRHandLeft;
-    public Material altAvatarMaterial;
+    public List<Material> altAvatarMaterials;
     #endregion
 
     #region Mono Methods
@@ -24,7 +24,7 @@ public class SceneSetup : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetKeyDown (KeyCode.Return))
+        if ((Input.GetKeyDown (KeyCode.R)) && (Input.GetKey (KeyCode.LeftShift)))
             RestartExperience ();
     }
     #endregion
@@ -41,10 +41,6 @@ public class SceneSetup : MonoBehaviour {
         }
         Debug.Log ("Creating Network Player");
         PlayerNetworkController networkPlayer = PhotonNetwork.Instantiate ("NetworkedPlayer", Vector3.zero, Quaternion.identity, 0).GetComponent<PlayerNetworkController> ();
-
-        if ((networkPlayer != null) && (LobbyManager.main.playerType == LobbyManager.LocalPlayerType.Companion)) {
-            networkPlayer.avatarRenderer.material = altAvatarMaterial;
-        }
     }
 
     public void RestartExperience() {
