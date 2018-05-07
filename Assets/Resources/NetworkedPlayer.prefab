@@ -2100,6 +2100,7 @@ MonoBehaviour:
   avatarHandLeft: {fileID: 4567705835394848}
   handRightRotationOffset: {x: -90, y: 90, z: 0}
   handLeftRotationOffset: {x: 90, y: 90, z: 0}
+  avatarRenderer: {fileID: 137941365104459534}
   playerGlobal: {fileID: 0}
   playerHead: {fileID: 0}
   playerHandRight: {fileID: 0}
@@ -2389,7 +2390,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 8a758f41de96147d29c0b9d92ce2a3c5, type: 2}
+  - {fileID: 2100000, guid: 3870e8f2b4a0fae4e8513dccbea7bb89, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

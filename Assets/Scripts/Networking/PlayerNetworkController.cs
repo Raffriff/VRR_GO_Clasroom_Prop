@@ -10,6 +10,8 @@ public class PlayerNetworkController : MonoBehaviour
 
     public Vector3 handRightRotationOffset, handLeftRotationOffset;
 
+    public Renderer avatarRenderer;
+
     [HideInInspector]
     public Transform playerGlobal, playerHead, playerHandRight, playerHandLeft;
 
