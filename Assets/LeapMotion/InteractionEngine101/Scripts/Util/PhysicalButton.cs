@@ -182,8 +182,9 @@ public class PhysicalButton : Slideable {
     // that is neither part of hand nor being grabbed.
     if (!IsPartOfHand(coll.collider)
         && !IsBeingGrasped(coll.collider)) {
-          Debug.Log(this.transform.parent.name + ": temp-disabled because colliding with " + coll.gameObject.name);
-      DisableTemporarily();
+            if (this.transform.parent != null)
+                Debug.Log (this.transform.parent.name + ": temp-disabled because colliding with " + coll.gameObject.name);
+            DisableTemporarily ();
     }
   }
 
