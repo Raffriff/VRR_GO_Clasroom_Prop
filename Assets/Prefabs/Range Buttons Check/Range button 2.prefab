@@ -1128,7 +1128,7 @@ MonoBehaviour:
       - fsmEvent:
           name: Range 2 Trigger
           isSystemEvent: 0
-          isGlobal: 0
+          isGlobal: 1
         toState: State 2
         linkStyle: 0
         linkConstraint: 0

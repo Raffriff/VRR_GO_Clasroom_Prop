@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Right Finger Trigger
   - Left Finger Trigger
+  - HandCollider
   layers:
   - Default
   - TransparentFX

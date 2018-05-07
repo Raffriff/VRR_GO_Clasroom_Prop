@@ -315,3 +315,7 @@ MonoBehaviour:
   - Q5 Yes Buton Action
   - Switch Scenes
   - SwitchScene
+  - ChangeSceneToCity
+  - ChangeSceneToMotorway
+  - Score
+  - ChangeSceneToHouse
