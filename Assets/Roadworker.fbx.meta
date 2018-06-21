@@ -111,6 +111,10 @@ ModelImporter:
     100206: upperarm_twist_R
     100208: upperarm_twist_R_end
     100210: Helmet
+    100212: HighVise
+    100214: LeftShoe
+    100216: RightShoe
+    100218: HighViseBackup
     400000: breast_L
     400002: breast_L_end
     400004: breast_R
@@ -217,6 +221,10 @@ ModelImporter:
     400206: upperarm_twist_R
     400208: upperarm_twist_R_end
     400210: Helmet
+    400212: HighVise
+    400214: LeftShoe
+    400216: RightShoe
+    400218: HighViseBackup
     2100000: NPC_Construct.002
     2100002: NPC_Construct
     2100004: RoadShirt
@@ -230,15 +238,33 @@ ModelImporter:
     2300000: name
     2300002: name.002
     2300004: Helmet
+    2300006: HighVise
+    2300008: LeftShoe
+    2300010: m_ca01
+    2300012: RightShoe
+    2300014: Shirt
+    2300016: Tousers
+    2300018: HighViseBackup
     3300000: name
     3300002: name.002
     3300004: Helmet
+    3300006: HighVise
+    3300008: LeftShoe
+    3300010: m_ca01
+    3300012: RightShoe
+    3300014: Shirt
+    3300016: Tousers
+    3300018: HighViseBackup
     4300000: name.002
     4300002: name
     4300004: Tousers
     4300006: Shirt
     4300008: m_ca01
     4300010: Helmet
+    4300012: HighVise
+    4300014: RightShoe
+    4300016: LeftShoe
+    4300018: HighViseBackup
     9500000: //RootNode
     10800000: Lamp_back_bottom
     10800002: Lamp_back_up
@@ -247,6 +273,9 @@ ModelImporter:
     13700000: m_ca01
     13700002: Shirt
     13700004: Tousers
+    13700006: HighVise
+    13700008: LeftShoe
+    13700010: RightShoe
   externalObjects: {}
   materials:
     importMaterials: 0
@@ -266,7 +295,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -318,7 +347,7 @@ ModelImporter:
     rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
