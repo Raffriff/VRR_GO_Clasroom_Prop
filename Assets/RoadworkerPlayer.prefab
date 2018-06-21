@@ -1321,6 +1321,7 @@ GameObject:
   - component: {fileID: 114335963771676862}
   - component: {fileID: 82111971760680828}
   - component: {fileID: 114323788817297558}
+  - component: {fileID: 114231378130808680}
   m_Layer: 0
   m_Name: m_ca01
   m_TagString: Untagged
@@ -3090,7 +3091,8 @@ AudioSource:
   m_GameObject: {fileID: 1842786075469480}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243791781632111408, guid: 1f75f2f851e78684dbee38568772145e,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -3179,6 +3181,19 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114231378130808680
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1842786075469480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a192962b951c9241bc4fe61937cfa10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voice: {fileID: 0}
+  audioInputDevice: Realtek USB2.0 MIC
 --- !u!114 &114323788817297558
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3194,7 +3209,7 @@ MonoBehaviour:
   prevSkinnedMeshRenderer: {fileID: 137185744091459370}
   getSkndMshRndr: 0
   audioSrc: {fileID: 82111971760680828}
-  audioClip: {fileID: 8300000, guid: 664efd6c6cc36cc40826f87e5d1fdf7b, type: 3}
+  audioClip: {fileID: 0}
   blendShapes:
   - Blink
   - LookUp
@@ -3207,9 +3222,9 @@ MonoBehaviour:
   saySmallIndex: 5
   sayMediumIndex: 6
   sayLargeIndex: 7
-  saySmallTrigger: 0.00029
-  sayMediumTrigger: 0.00171
-  sayLargeTrigger: 0.00322
+  saySmallTrigger: 0.00025
+  sayMediumTrigger: 0.00118
+  sayLargeTrigger: 0.00224
   audioUpdateDelay: 0.033
   blendSpeed: 41.1
   rangeOfMotion: 100

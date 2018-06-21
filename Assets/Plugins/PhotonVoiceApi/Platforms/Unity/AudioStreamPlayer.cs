@@ -24,7 +24,7 @@ public class AudioStreamPlayer
     // jitter-free stream position
     private int streamSamplePosAvg;
 
-    private AudioSource source;
+    public AudioSource source;
     private string logPrefix;
     private bool debugInfo;
 

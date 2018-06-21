@@ -9,7 +9,8 @@
 //[HelpURL("https://doc.photonengine.com/en-us/voice/current/getting-started/voice-for-pun#the__audio_source__prefab")]
 public class PhotonVoiceSpeaker : Photon.MonoBehaviour
 {
-    private AudioStreamPlayer player;
+    public AudioStreamPlayer player;
+    public bool isLinked = false;
 
     /// <summary>Time when last audio packet was received for the speaker.</summary>
     public long LastRecvTime { get; private set; }
@@ -33,6 +34,7 @@ public class PhotonVoiceSpeaker : Photon.MonoBehaviour
     internal void OnVoiceLinked(int frequency, int channels, int frameSamplesPerChannel, int playDelayMs)
     {
         this.player.Start(frequency, channels, frameSamplesPerChannel, playDelayMs);
+        isLinked = true;
     }
 
     internal void OnVoiceUnlinked()
