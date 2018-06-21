@@ -1319,6 +1319,8 @@ GameObject:
   - component: {fileID: 4071752957323926}
   - component: {fileID: 137185744091459370}
   - component: {fileID: 114335963771676862}
+  - component: {fileID: 82111971760680828}
+  - component: {fileID: 114323788817297558}
   m_Layer: 0
   m_Name: m_ca01
   m_TagString: Untagged
@@ -3080,6 +3082,86 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1639113572533984}
   m_Mesh: {fileID: 4300010, guid: 243a02f9422723346adf2db8d72dd3a4, type: 3}
+--- !u!82 &82111971760680828
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1842786075469480}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!95 &95369242825290654
 Animator:
   serializedVersion: 3
@@ -3097,6 +3179,56 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114323788817297558
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1842786075469480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1976067524, guid: 7a255d2e87aae364fbd819c455094253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinnedMeshRenderer: {fileID: 137185744091459370}
+  prevSkinnedMeshRenderer: {fileID: 137185744091459370}
+  getSkndMshRndr: 0
+  audioSrc: {fileID: 82111971760680828}
+  audioClip: {fileID: 8300000, guid: 664efd6c6cc36cc40826f87e5d1fdf7b, type: 3}
+  blendShapes:
+  - Blink
+  - LookUp
+  - LookDown
+  - LookRight
+  - LookLeft
+  - SaySmall
+  - SayMedium
+  - SayLarge
+  saySmallIndex: 5
+  sayMediumIndex: 6
+  sayLargeIndex: 7
+  saySmallTrigger: 0.00029
+  sayMediumTrigger: 0.00171
+  sayLargeTrigger: 0.00322
+  audioUpdateDelay: 0.033
+  blendSpeed: 41.1
+  rangeOfMotion: 100
+  isTalking: 1
+  prevIsTalking: 1
+  lockShapes: 1
+  broadcast: 0
+  broadcastReceiversCount: 0
+  expandBroadcast: 0
+  broadcastReceivers: []
+  propagateToChildren: 0
+  average: 0.0064000497
+  say: Large
+  sayIndex: 3
+  sayAmount:
+    saySmall: 0
+    sayMedium: 0
+    sayLarge: 100
+  prevAudioUpdateDelay: 0.033
 --- !u!114 &114335963771676862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3663,6 +3795,13 @@ SkinnedMeshRenderer:
   - {fileID: 4096349904824498}
   - {fileID: 4601471518960852}
   m_BlendShapeWeights:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   - 0
   m_RootBone: {fileID: 4175154845474272}
   m_AABB:
