@@ -3488,8 +3488,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114482499646475530}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 18
+  instantiationId: 18
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114416377886599158
@@ -3514,8 +3514,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 17
+  instantiationId: 17
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114482499646475530
@@ -3940,10 +3940,10 @@ MonoBehaviour:
   sayMediumIndex: 6
   sayLargeIndex: 7
   saySmallTrigger: 0.00029
-  sayMediumTrigger: 0.00171
-  sayLargeTrigger: 0.00322
+  sayMediumTrigger: 0.0009
+  sayLargeTrigger: 0.0012
   audioUpdateDelay: 0.033
-  blendSpeed: 41.1
+  blendSpeed: 70.9
   rangeOfMotion: 100
   isTalking: 1
   prevIsTalking: 1
@@ -4213,8 +4213,8 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 41e246fef3dfbf2458b80790f0828252, type: 2}
-  - {fileID: 2100000, guid: 74fd64b5798a38c408a2003c5c6574ae, type: 2}
-  - {fileID: 2100000, guid: 8754be5738897604bab096104204f3b9, type: 2}
+  - {fileID: 2100000, guid: 41e246fef3dfbf2458b80790f0828252, type: 2}
+  - {fileID: 2100000, guid: 41e246fef3dfbf2458b80790f0828252, type: 2}
   - {fileID: 2100000, guid: f59150a78d57db54e853f458c5a8ed0d, type: 2}
   - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 2100000, guid: f59150a78d57db54e853f458c5a8ed0d, type: 2}

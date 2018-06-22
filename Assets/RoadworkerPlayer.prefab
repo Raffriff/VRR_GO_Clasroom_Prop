@@ -1670,8 +1670,7 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
-  m_Children:
-  - {fileID: 4208051805081962}
+  m_Children: []
   m_Father: {fileID: 4400627474825390}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1913,12 +1912,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1748396554373048}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: -0.00142, z: 0.01714}
-  m_LocalScale: {x: 0.011494253, y: 0.01149425, z: 0.01149425}
+  m_LocalRotation: {x: -0.024591532, y: -0.00000006253404, z: -0.0000000034280911,
+    w: 0.99969757}
+  m_LocalPosition: {x: 0, y: 0.00066394015, z: 0.0008490323}
+  m_LocalScale: {x: 0.011494254, y: 0.011494297, z: 0.011494255}
   m_Children: []
-  m_Father: {fileID: 4071752957323926}
-  m_RootOrder: 0
+  m_Father: {fileID: 4651166278003942}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4211890444188342
 Transform:
@@ -2542,6 +2542,7 @@ Transform:
   m_Children:
   - {fileID: 4555653951032896}
   - {fileID: 4169401229855412}
+  - {fileID: 4208051805081962}
   m_Father: {fileID: 4725997476003942}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3089,7 +3090,7 @@ AudioSource:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1842786075469480}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 243791781632111408, guid: 1f75f2f851e78684dbee38568772145e,
     type: 2}
@@ -3193,7 +3194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   voice: {fileID: 0}
-  audioInputDevice: Realtek USB2.0 MIC
+  audioInputDevice: 
 --- !u!114 &114323788817297558
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3707,8 +3708,8 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 41e246fef3dfbf2458b80790f0828252, type: 2}
-  - {fileID: 2100000, guid: 74fd64b5798a38c408a2003c5c6574ae, type: 2}
-  - {fileID: 2100000, guid: 8754be5738897604bab096104204f3b9, type: 2}
+  - {fileID: 2100000, guid: 41e246fef3dfbf2458b80790f0828252, type: 2}
+  - {fileID: 2100000, guid: 41e246fef3dfbf2458b80790f0828252, type: 2}
   - {fileID: 2100000, guid: f59150a78d57db54e853f458c5a8ed0d, type: 2}
   - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 2100000, guid: f59150a78d57db54e853f458c5a8ed0d, type: 2}

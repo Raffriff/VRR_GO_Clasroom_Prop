@@ -22,9 +22,24 @@ public class MicToSalsa : UnityEngine.MonoBehaviour {
     {
         if (voice == null)
         {
-            salsa.audioClip = Microphone.Start (audioInputDevice, true, 10, 44100);
-            salsa.audioSrc.clip = salsa.audioClip;
-            salsa.audioSrc.Play ();
+            if (audioInputDevice != "")
+            {
+                salsa.audioClip = Microphone.Start (audioInputDevice, true, 10, 44100);
+                salsa.audioSrc.clip = salsa.audioClip;
+                salsa.audioSrc.velocityUpdateMode = AudioVelocityUpdateMode.Dynamic;
+                while (!(Microphone.GetPosition(audioInputDevice) <= 0)) { }
+                salsa.audioSrc.Play ();
+                Debug.Log ("Audio Input: " + audioInputDevice);
+            } else if (Microphone.devices.Length > 0)
+            {
+                salsa.audioClip = Microphone.Start (Microphone.devices[0], true, 10, 44100);
+                salsa.audioSrc.clip = salsa.audioClip;
+                salsa.audioSrc.velocityUpdateMode = AudioVelocityUpdateMode.Dynamic;
+                while (!(Microphone.GetPosition (Microphone.devices[0]) <= 0)) { }
+                salsa.audioSrc.Play ();
+                Debug.Log ("Audio Input: " + Microphone.devices[0]);
+            }
+            
         }
     }
     private void Update()
@@ -39,6 +54,11 @@ public class MicToSalsa : UnityEngine.MonoBehaviour {
                 salsa.audioSrc.clip = voice.player.source.clip;
                 salsa.audioSrc.Play ();
             }
+        }
+
+        if (salsa.audioSrc != null)
+        {
+            
         }
     }
 }
