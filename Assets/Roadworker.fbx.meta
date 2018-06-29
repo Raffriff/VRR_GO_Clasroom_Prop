@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 243a02f9422723346adf2db8d72dd3a4
-timeCreated: 1529417684
-licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -115,6 +113,10 @@ ModelImporter:
     100214: LeftShoe
     100216: RightShoe
     100218: HighViseBackup
+    100220: Jacket
+    100222: Mesh
+    100224: Skeleton
+    100226: Trousers
     400000: breast_L
     400002: breast_L_end
     400004: breast_R
@@ -225,6 +227,10 @@ ModelImporter:
     400214: LeftShoe
     400216: RightShoe
     400218: HighViseBackup
+    400220: Jacket
+    400222: Mesh
+    400224: Skeleton
+    400226: Trousers
     2100000: NPC_Construct.002
     2100002: NPC_Construct
     2100004: RoadShirt
@@ -265,6 +271,9 @@ ModelImporter:
     4300014: RightShoe
     4300016: LeftShoe
     4300018: HighViseBackup
+    4300020: Mesh
+    4300022: Trousers
+    4300024: Jacket
     9500000: //RootNode
     10800000: Lamp_back_bottom
     10800002: Lamp_back_up
@@ -276,6 +285,9 @@ ModelImporter:
     13700006: HighVise
     13700008: LeftShoe
     13700010: RightShoe
+    13700012: Jacket
+    13700014: Mesh
+    13700016: Trousers
   externalObjects: {}
   materials:
     importMaterials: 0
@@ -295,6 +307,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
