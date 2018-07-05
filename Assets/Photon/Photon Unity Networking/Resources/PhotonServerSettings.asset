@@ -39,4 +39,5 @@ MonoBehaviour:
   - rpc
   - rpc_d
   - rpc_s
+  - ChangePos
   DisableAutoOpenWizard: 1

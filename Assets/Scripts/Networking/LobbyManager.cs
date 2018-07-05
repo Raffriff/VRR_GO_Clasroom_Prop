@@ -103,6 +103,7 @@ public class LobbyManager : Photon.PunBehaviour
         Debug.Log ("Connected To Master");
         isCompanion.gameObject.SetActive (true);
         startButton.gameObject.SetActive (true);
+        Login();
     }
 
     public override void OnJoinedRoom() {
